@@ -1,3 +1,4 @@
+
 Imports System
 Imports System.ComponentModel.Design
 Imports System.Runtime.InteropServices
@@ -5,12 +6,17 @@ Imports System.Security.Cryptography.X509Certificates
 Imports System.Math
 module game
 dim bar as string = "+----------------------------------------------------------------------------------------------------------------------------------------------------------+" 
+dim x as Integer
 	Sub Main()
         ''Console.WindowWidth = Console.LargestWindowWidth
         ''Console.WindowHeight = Console.LargestWindowHeight
         ''Console.WindowWidth = 156
         ''Console.WindowHeight = 40
-
+        console.writeline()
+        console.writeline(bar)
+        for x = 0 to 12
+            console.writeline()
+        next
         Console.ForegroundColor = ConsoleColor.Red
         Console.WriteLine("   _,-='""-.__               /\_/\")
         Console.Write("   `-.}       `=._,.-==-._.,  @ @._,")
@@ -24,6 +30,11 @@ dim bar as string = "+----------------------------------------------------------
         Console.ForegroundColor = ConsoleColor.White
         Console.WriteLine()
         Console.WriteLine("                                                               would you like to start a game? y/n ")
+        for x = 0 to 15
+            console.writeline()
+        next
+        console.writeline(bar)
+        console.writeline()
         If Console.ReadLine = "y" Then
             Console.Clear()
             start()
@@ -35,7 +46,6 @@ dim bar as string = "+----------------------------------------------------------
     Sub start()
         Dim health As Integer = 100
         Dim situation As Integer 
-        dim x as Integer = 0
         dim path as string
         
         
