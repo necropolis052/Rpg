@@ -4,6 +4,12 @@ Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Math
 
+'#############################TO DO LIST#############################
+'
+'implament the commands function and get it working so you can move around with if statements checking if a move is possible and then changing co-ordinates if so
+'
+'
+
 Structure location
     Dim Name As String
     Dim Description As String
