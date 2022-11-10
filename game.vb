@@ -19,8 +19,8 @@ Module game
     Sub Main()
         ''Console.WindowWidth = Console.LargestWindowWidth
         ''Console.WindowHeight = Console.LargestWindowHeight
-        Console.WindowWidth = 156
-        Console.WindowHeight = 40
+        ''Console.WindowWidth = 156
+        ''Console.WindowHeight = 40
         Console.WriteLine()
         Console.WriteLine(bar)
         For x = 0 To 12
