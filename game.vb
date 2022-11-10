@@ -1,9 +1,9 @@
-
 Imports System
 Imports System.ComponentModel.Design
 Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Math
+
 Structure location
     Dim Name As String
     Dim Description As String
@@ -11,11 +11,37 @@ Structure location
     Dim items As String
     Dim Npcs As String
 End Structure
+
+Structure self
+     dim name as string
+     dim hp as integer
+     dim mp as integer
+     dim status_effects() as string
+End Structure
+ 
 Module game
+    dim playerx, playery as integer
+    Function place(a as integer, b as integer) as string
+        for x = 0 to (map(a, b).name.length + 3)
+            console.Write("#")
+        Next
+        console.Writeline()
+        console.WriteLine("# " & map(a, b).name & " #")
+        for x = 0 to (map(a, b).name.length + 3)
+            console.Write("#")
+        Next
+        console.WriteLine()
+        console.WriteLine("Description: " & map(a, b).Description)
+        console.WriteLine("The items in " & map(a, b).name & " are as follows: " & map(a, b).items)
+        
+        
+    end Function
+    
     Dim Map(10, 10) As location
     Dim bar As String = "+----------------------------------------------------------------------------------------------------------------------------------------------------------+"
     Dim x As Integer
     Dim name As String
+    dim res as string
     Sub Main()
         ''Console.WindowWidth = Console.LargestWindowWidth
         ''Console.WindowHeight = Console.LargestWindowHeight
@@ -56,25 +82,1014 @@ Module game
 
     End Sub
     Sub start()
-        Dim health As Integer = 100
-        Map(0, 0).Name = "Forest"
-        Map(0, 0).Description = ""
+    
+        console.clear
+        playerx = 0 
+        playery = 0
+   
+        Map(0, 0).Name = "james's house"
+        Map(0, 0).Description = "house"
         Map(0, 0).North = True
         Map(0, 0).East = True
         Map(0, 0).South = True
         Map(0, 0).West = True
-        Map(0, 0).
-        Map(0, 0)
-        Map(0, 0)
-        Map(0, 0)
-        Map(0, 0)
-
-
+        Map(0, 0).items = "james"
+        
+        Map(0, 1).Name = ""
+        Map(0, 1).Description = ""
+        Map(0, 1).North = True
+        Map(0, 1).East = True
+        Map(0, 1).South = True
+        Map(0, 1).West = True
+        Map(0, 1).items = ""
+        
+        Map(0, 2).Name = ""
+        Map(0, 2).Description = ""
+        Map(0, 2).North = True
+        Map(0, 2).East = True
+        Map(0, 2).South = True
+        Map(0, 2).West = True
+        Map(0, 2).items = ""
+        
+        Map(0, 3).Name = ""
+        Map(0, 3).Description = ""
+        Map(0, 3).North = True
+        Map(0, 3).East = True
+        Map(0, 3).South = True
+        Map(0, 3).West = True
+        Map(0, 3).items = ""
+                
+        Map(0, 4).Name = ""
+        Map(0, 4).Description = ""
+        Map(0, 4).North = True
+        Map(0, 4).East = True
+        Map(0, 4).South = True
+        Map(0, 4).West = True
+        Map(0, 4).items = ""
+                
+        Map(0, 5).Name = ""
+        Map(0, 5).Description = ""
+        Map(0, 5).North = True
+        Map(0, 5).East = True
+        Map(0, 5).South = True
+        Map(0, 5).West = True
+        Map(0, 5).items = ""
+                
+        Map(0, 6).Name = ""
+        Map(0, 6).Description = ""
+        Map(0, 6).North = True
+        Map(0, 6).East = True
+        Map(0, 6).South = True
+        Map(0, 6).West = True
+        Map(0, 6).items = ""
+                
+        Map(0, 7).Name = ""
+        Map(0, 7).Description = ""
+        Map(0, 7).North = True
+        Map(0, 7).East = True
+        Map(0, 7).South = True
+        Map(0, 7).West = True
+        Map(0, 7).items = ""
+                
+        Map(0, 8).Name = ""
+        Map(0, 8).Description = ""
+        Map(0, 8).North = True
+        Map(0, 8).East = True
+        Map(0, 8).South = True
+        Map(0, 8).West = True
+        Map(0, 8).items = ""
+                
+        Map(0, 9).Name = ""
+        Map(0, 9).Description = ""
+        Map(0, 9).North = True
+        Map(0, 9).East = True
+        Map(0, 9).South = True
+        Map(0, 9).West = True
+        Map(0, 9).items = ""
+                
+        Map(0, 10).Name = ""
+        Map(0, 10).Description = ""
+        Map(0, 10).North = True
+        Map(0, 10).East = True
+        Map(0, 10).South = True
+        Map(0, 10).West = True
+        Map(0, 10).items = ""
+        
+        'start of 1
+        
+        Map(1, 0).Name = ""
+        Map(1, 0).Description = ""
+        Map(1, 0).North = True
+        Map(1, 0).East = True
+        Map(1, 0).South = True
+        Map(1, 0).West = True
+        Map(1, 0).items = ""
+        	
+        Map(1, 1).Name = ""
+        Map(1, 1).Description = ""
+        Map(1, 1).North = True
+        Map(1, 1).East = True
+        Map(1, 1).South = True
+        Map(1, 1).West = True
+        Map(1, 1).items = ""
+        	
+        Map(1, 2).Name = ""
+        Map(1, 2).Description = ""
+        Map(1, 2).North = True
+        Map(1, 2).East = True
+        Map(1, 2).South = True
+        Map(1, 2).West = True
+        Map(1, 2).items = ""
+        	
+        Map(1, 3).Name = ""
+        Map(1, 3).Description = ""
+        Map(1, 3).North = True
+        Map(1, 3).East = True
+        Map(1, 3).South = True
+        Map(1, 3).West = True
+        Map(1, 3).items = ""
+               
+        Map(1, 4).Name = ""
+        Map(1, 4).Description = ""
+        Map(1, 4).North = True
+        Map(1, 4).East = True
+        Map(1, 4).South = True
+        Map(1, 4).West = True
+        Map(1, 4).items = ""
+               
+        Map(1, 5).Name = ""
+        Map(1, 5).Description = ""
+        Map(1, 5).North = True
+        Map(1, 5).East = True
+        Map(1, 5).South = True
+        Map(1, 5).West = True
+        Map(1, 5).items = ""
+               
+        Map(1, 6).Name = ""
+        Map(1, 6).Description = ""
+        Map(1, 6).North = True
+        Map(1, 6).East = True
+        Map(1, 6).South = True
+        Map(1, 6).West = True
+        Map(1, 6).items = ""
+               
+        Map(1, 7).Name = ""
+        Map(1, 7).Description = ""
+        Map(1, 7).North = True
+        Map(1, 7).East = True
+        Map(1, 7).South = True
+        Map(1, 7).West = True
+        Map(1, 7).items = ""
+               
+        Map(1, 8).Name = ""
+        Map(1, 8).Description = ""
+        Map(1, 8).North = True
+        Map(1, 8).East = True
+        Map(1, 8).South = True
+        Map(1, 8).West = True
+        Map(1, 8).items = ""
+               
+        Map(1, 9).Name = ""
+        Map(1, 9).Description = ""
+        Map(1, 9).North = True
+        Map(1, 9).East = True
+        Map(1, 9).South = True
+        Map(1, 9).West = True
+        Map(1, 9).items = ""
+               
+        Map(1, 10).Name = ""
+        Map(1, 10).Description = ""
+        Map(1, 10).North = True
+        Map(1, 10).East = True
+        Map(1, 10).South = True
+        Map(1, 10).West = True
+        Map(1, 10).items = ""
+        
+        Map(1, 0).Name = ""
+        Map(1, 0).Description = ""
+        Map(1, 0).North = True
+        Map(1, 0).East = True
+        Map(1, 0).South = True
+        Map(1, 0).West = True
+        Map(1, 0).items = ""
+        
+        'start of 2 
+        
+        Map(2, 0).Name = ""
+        Map(2, 0).Description = ""
+        Map(2, 0).North = True
+        Map(2, 0).East = True
+        Map(2, 0).South = True
+        Map(2, 0).West = True
+        Map(2, 0).items = ""
+        
+        Map(2, 1).Name = ""
+        Map(2, 1).Description = ""
+        Map(2, 1).North = True
+        Map(2, 1).East = True
+        Map(2, 1).South = True
+        Map(2, 1).West = True
+        Map(2, 1).items = ""
+        
+        Map(2, 2).Name = ""
+        Map(2, 2).Description = ""
+        Map(2, 2).North = True
+        Map(2, 2).East = True
+        Map(2, 2).South = True
+        Map(2, 2).West = True
+        Map(2, 2).items = ""
+        
+        Map(2, 3).Name = ""           
+        Map(2, 3).Description = ""
+        Map(2, 3).North = True
+        Map(2, 3).East = True
+        Map(2, 3).South = True
+        Map(2, 3).West = True
+        Map(2, 3).items = ""
+             
+        Map(2, 4).Name = ""
+        Map(2, 4).Description = ""
+        Map(2, 4).North = True
+        Map(2, 4).East = True
+        Map(2, 4).South = True
+        Map(2, 4).West = True
+        Map(2, 4).items = ""
+              
+        Map(2, 5).Name = ""
+        Map(2, 5).Description = ""
+        Map(2, 5).North = True
+        Map(2, 5).East = True
+        Map(2, 5).South = True
+        Map(2, 5).West = True
+        Map(2, 5).items = ""
+              
+        Map(2, 6).Name = ""
+        Map(2, 6).Description = ""
+        Map(2, 6).North = True
+        Map(2, 6).East = True
+        Map(2, 6).South = True
+        Map(2, 6).West = True
+        Map(2, 6).items = ""
+              
+        Map(2, 7).Name = ""
+        Map(2, 7).Description = ""
+        Map(2, 7).North = True
+        Map(2, 7).East = True
+        Map(2, 7).South = True
+        Map(2, 7).West = True
+        Map(2, 7).items = ""
+              
+        Map(2, 8).Name = ""
+        Map(2, 8).Description = ""
+        Map(2, 8).North = True
+        Map(2, 8).East = True
+        Map(2, 8).South = True
+        Map(2, 8).West = True
+        Map(2, 8).items = ""
+              
+        Map(2, 9).Name = ""
+        Map(2, 9).Description = ""
+        Map(2, 9).North = True
+        Map(2, 9).East = True
+        Map(2, 9).South = True
+        Map(2, 9).West = True
+        Map(2, 9).items = ""
+              
+        Map(2, 10).Name = ""
+        Map(2, 10).Description = ""
+        Map(2, 10).North = True
+        Map(2, 10).East = True
+        Map(2, 10).South = True
+        Map(2, 10).West = True
+        Map(2, 10).items = ""
+        
+        'start of 3
+        
+        Map(3, 0).Name = ""
+        Map(3, 0).Description = ""
+        Map(3, 0).North = True
+        Map(3, 0).East = True
+        Map(3, 0).South = True
+        Map(3, 0).West = True
+        Map(3, 0).items = ""
+        
+        Map(3, 1).Name = ""
+        Map(3, 1).Description = ""
+        Map(3, 1).North = True
+        Map(3, 1).East = True
+        Map(3, 1).South = True
+        Map(3, 1).West = True
+        Map(3, 1).items = ""
+        
+        Map(3, 2).Name = ""
+        Map(3, 2).Description = ""
+        Map(3, 2).North = True
+        Map(3, 2).East = True
+        Map(3, 2).South = True
+        Map(3, 2).West = True
+        Map(3, 2).items = ""
+        
+        Map(3, 3).Name = ""           
+        Map(3, 3).Description = ""
+        Map(3, 3).North = True
+        Map(3, 3).East = True
+        Map(3, 3).South = True
+        Map(3, 3).West = True
+        Map(3, 3).items = ""
+             
+        Map(3, 4).Name = ""
+        Map(3, 4).Description = ""
+        Map(3, 4).North = True
+        Map(3, 4).East = True
+        Map(3, 4).South = True
+        Map(3, 4).West = True
+        Map(3, 4).items = ""
+              
+        Map(3, 5).Name = ""
+        Map(3, 5).Description = ""
+        Map(3, 5).North = True
+        Map(3, 5).East = True
+        Map(3, 5).South = True
+        Map(3, 5).West = True
+        Map(3, 5).items = ""
+              
+        Map(3, 6).Name = ""
+        Map(3, 6).Description = ""
+        Map(3, 6).North = True
+        Map(3, 6).East = True
+        Map(3, 6).South = True
+        Map(3, 6).West = True
+        Map(3, 6).items = ""
+              
+        Map(3, 7).Name = ""
+        Map(3, 7).Description = ""
+        Map(3, 7).North = True
+        Map(3, 7).East = True
+        Map(3, 7).South = True
+        Map(3, 7).West = True
+        Map(3, 7).items = ""
+              
+        Map(3, 8).Name = ""
+        Map(3, 8).Description = ""
+        Map(3, 8).North = True
+        Map(3, 8).East = True
+        Map(3, 8).South = True
+        Map(3, 8).West = True
+        Map(3, 8).items = ""
+              
+        Map(3, 9).Name = ""
+        Map(3, 9).Description = ""
+        Map(3, 9).North = True
+        Map(3, 9).East = True
+        Map(3, 9).South = True
+        Map(3, 9).West = True
+        Map(3, 9).items = ""
+              
+        Map(3, 10).Name = ""
+        Map(3, 10).Description = ""
+        Map(3, 10).North = True
+        Map(3, 10).East = True
+        Map(3, 10).South = True
+        Map(3, 10).West = True
+        Map(3, 10).items = ""
+        
+        'start of 4
+        
+        Map(4, 0).Name = ""
+        Map(4, 0).Description = ""
+        Map(4, 0).North = True
+        Map(4, 0).East = True
+        Map(4, 0).South = True
+        Map(4, 0).West = True
+        Map(4, 0).items = ""
+        
+        Map(4, 1).Name = ""
+        Map(4, 1).Description = ""
+        Map(4, 1).North = True
+        Map(4, 1).East = True
+        Map(4, 1).South = True
+        Map(4, 1).West = True
+        Map(4, 1).items = ""
+        
+        Map(4, 2).Name = ""
+        Map(4, 2).Description = ""
+        Map(4, 2).North = True
+        Map(4, 2).East = True
+        Map(4, 2).South = True
+        Map(4, 2).West = True
+        Map(4, 2).items = ""
+        
+        Map(4, 3).Name = ""           
+        Map(4, 3).Description = ""
+        Map(4, 3).North = True
+        Map(4, 3).East = True
+        Map(4, 3).South = True
+        Map(4, 3).West = True
+        Map(4, 3).items = ""
+             
+        Map(4, 4).Name = ""
+        Map(4, 4).Description = ""
+        Map(4, 4).North = True
+        Map(4, 4).East = True
+        Map(4, 4).South = True
+        Map(4, 4).West = True
+        Map(4, 4).items = ""
+              
+        Map(4, 5).Name = ""
+        Map(4, 5).Description = ""
+        Map(4, 5).North = True
+        Map(4, 5).East = True
+        Map(4, 5).South = True
+        Map(4, 5).West = True
+        Map(4, 5).items = ""
+              
+        Map(4, 6).Name = ""
+        Map(4, 6).Description = ""
+        Map(4, 6).North = True
+        Map(4, 6).East = True
+        Map(4, 6).South = True
+        Map(4, 6).West = True
+        Map(4, 6).items = ""
+              
+        Map(4, 7).Name = ""
+        Map(4, 7).Description = ""
+        Map(4, 7).North = True
+        Map(4, 7).East = True
+        Map(4, 7).South = True
+        Map(4, 7).West = True
+        Map(4, 7).items = ""
+              
+        Map(4, 8).Name = ""
+        Map(4, 8).Description = ""
+        Map(4, 8).North = True
+        Map(4, 8).East = True
+        Map(4, 8).South = True
+        Map(4, 8).West = True
+        Map(4, 8).items = ""
+              
+        Map(4, 9).Name = ""
+        Map(4, 9).Description = ""
+        Map(4, 9).North = True
+        Map(4, 9).East = True
+        Map(4, 9).South = True
+        Map(4, 9).West = True
+        Map(4, 9).items = ""
+              
+        Map(3, 10).Name = ""
+        Map(3, 10).Description = ""
+        Map(3, 10).North = True
+        Map(3, 10).East = True
+        Map(3, 10).South = True
+        Map(3, 10).West = True
+        Map(3, 10).items = ""
+        
+        'start of 5
+        
+        Map(5, 0).Name = ""
+        Map(5, 0).Description = ""
+        Map(5, 0).North = True
+        Map(5, 0).East = True
+        Map(5, 0).South = True
+        Map(5, 0).West = True
+        Map(5, 0).items = ""
+        	
+        Map(5, 1).Name = ""
+        Map(5, 1).Description = ""
+        Map(5, 1).North = True
+        Map(5, 1).East = True
+        Map(5, 1).South = True
+        Map(5, 1).West = True
+        Map(5, 1).items = ""
+        
+        Map(5, 2).Name = ""
+        Map(5, 2).Description = ""
+        Map(5, 2).North = True
+        Map(5, 2).East = True
+        Map(5, 2).South = True
+        Map(5, 2).West = True
+        Map(5, 2).items = ""
+        	
+        Map(5, 3).Name = ""           
+        Map(5, 3).Description = ""
+        Map(5, 3).North = True
+        Map(5, 3).East = True
+        Map(5, 3).South = True
+        Map(5, 3).West = True
+        Map(5, 3).items = ""
+             
+        Map(5, 4).Name = ""
+        Map(5, 4).Description = ""
+        Map(5, 4).North = True
+        Map(5, 4).East = True
+        Map(5, 4).South = True
+        Map(5, 4).West = True
+        Map(5, 4).items = ""
+            
+        Map(5, 5).Name = ""
+        Map(5, 5).Description = ""
+        Map(5, 5).North = True
+        Map(5, 5).East = True
+        Map(5, 5).South = True
+        Map(5, 5).West = True
+        Map(5, 5).items = ""
+              
+        Map(5, 6).Name = ""
+        Map(5, 6).Description = ""
+        Map(5, 6).North = True
+        Map(5, 6).East = True
+        Map(5, 6).South = True
+        Map(5, 6).West = True
+        Map(5, 6).items = ""
+            
+        Map(5, 7).Name = ""
+        Map(5, 7).Description = ""
+        Map(5, 7).North = True
+        Map(5, 7).East = True
+        Map(5, 7).South = True
+        Map(5, 7).West = True
+        Map(5, 7).items = ""
+              
+        Map(5, 8).Name = ""
+        Map(5, 8).Description = ""
+        Map(5, 8).North = True
+        Map(5, 8).East = True
+        Map(5, 8).South = True
+        Map(5, 8).West = True
+        Map(5, 8).items = ""
+              
+        Map(5, 9).Name = ""
+        Map(5, 9).Description = ""
+        Map(5, 9).North = True
+        Map(5, 9).East = True
+        Map(5, 9).South = True
+        Map(5, 9).West = True
+        Map(5, 9).items = ""
+              
+        Map(5, 10).Name = ""
+        Map(5, 10).Description = ""
+        Map(5, 10).North = True
+        Map(5, 10).East = True
+        Map(5, 10).South = True
+        Map(5, 10).West = True
+        Map(5, 10).items = ""
+         
+        'start of 6
+        
+        Map(6, 0).Name = ""
+        Map(6, 0).Description = ""
+        Map(6, 0).North = True
+        Map(6, 0).East = True
+        Map(6, 0).South = True
+        Map(6, 0).West = True
+        Map(6, 0).items = ""
+            
+        Map(6, 1).Name = ""
+        Map(6, 1).Description = ""
+        Map(6, 1).North = True
+        Map(6, 1).East = True
+        Map(6, 1).South = True
+        Map(6, 1).West = True
+        Map(6, 1).items = ""
+        
+        Map(6, 2).Name = ""
+        Map(6, 2).Description = ""
+        Map(6, 2).North = True
+        Map(6, 2).East = True
+        Map(6, 2).South = True
+        Map(6, 2).West = True
+        Map(6, 2).items = ""
+            
+        Map(6, 3).Name = ""           
+        Map(6, 3).Description = ""
+        Map(6, 3).North = True
+        Map(6, 3).East = True
+        Map(6, 3).South = True
+        Map(6, 3).West = True
+        Map(6, 3).items = ""
+             
+        Map(6, 4).Name = ""
+        Map(6, 4).Description = ""
+        Map(6, 4).North = True
+        Map(6, 4).East = True
+        Map(6, 4).South = True
+        Map(6, 4).West = True
+        Map(6, 4).items = ""
+            
+        Map(6, 5).Name = ""
+        Map(6, 5).Description = ""
+        Map(6, 5).North = True
+        Map(6, 5).East = True
+        Map(6, 5).South = True
+        Map(6, 5).West = True
+        Map(6, 5).items = ""
+              
+        Map(6, 6).Name = ""
+        Map(6, 6).Description = ""
+        Map(6, 6).North = True
+        Map(6, 6).East = True
+        Map(6, 6).South = True
+        Map(6, 6).West = True
+        Map(6, 6).items = ""
+            
+        Map(6, 7).Name = ""
+        Map(6, 7).Description = ""
+        Map(6, 7).North = True
+        Map(6, 7).East = True
+        Map(6, 7).South = True
+        Map(6, 7).West = True
+        Map(6, 7).items = ""
+              
+        Map(6, 8).Name = ""
+        Map(6, 8).Description = ""
+        Map(6, 8).North = True
+        Map(6, 8).East = True
+        Map(6, 8).South = True
+        Map(6, 8).West = True
+        Map(6, 8).items = ""
+              
+        Map(6, 9).Name = ""
+        Map(6, 9).Description = ""
+        Map(6, 9).North = True
+        Map(6, 9).East = True
+        Map(6, 9).South = True
+        Map(6, 9).West = True
+        Map(6, 9).items = ""
+              
+        Map(6, 10).Name = ""
+        Map(6, 10).Description = ""
+        Map(6, 10).North = True
+        Map(6, 10).East = True
+        Map(6, 10).South = True
+        Map(6, 10).West = True
+        Map(6, 10).items = ""
+        
+        'start of 7
+        
+        Map(7, 0).Name = ""
+        Map(7, 0).Description = ""
+        Map(7, 0).North = True
+        Map(7, 0).East = True
+        Map(7, 0).South = True
+        Map(7, 0).West = True
+        Map(7, 0).items = ""
+            
+        Map(7, 1).Name = ""
+        Map(7, 1).Description = ""
+        Map(7, 1).North = True
+        Map(7, 1).East = True
+        Map(7, 1).South = True
+        Map(7, 1).West = True
+        Map(7, 1).items = ""
+        
+        Map(7, 2).Name = ""
+        Map(7, 2).Description = ""
+        Map(7, 2).North = True
+        Map(7, 2).East = True
+        Map(7, 2).South = True
+        Map(7, 2).West = True
+        Map(7, 2).items = ""
+            
+        Map(7, 3).Name = ""           
+        Map(7, 3).Description = ""
+        Map(7, 3).North = True
+        Map(7, 3).East = True
+        Map(7, 3).South = True
+        Map(7, 3).West = True
+        Map(7, 3).items = ""
+             
+        Map(7, 4).Name = ""
+        Map(7, 4).Description = ""
+        Map(7, 4).North = True
+        Map(7, 4).East = True
+        Map(7, 4).South = True
+        Map(7, 4).West = True
+        Map(7, 4).items = ""
+            
+        Map(7, 5).Name = ""
+        Map(7, 5).Description = ""
+        Map(7, 5).North = True
+        Map(7, 5).East = True
+        Map(7, 5).South = True
+        Map(7, 5).West = True
+        Map(7, 5).items = ""
+              
+        Map(7, 6).Name = ""
+        Map(7, 6).Description = ""
+        Map(7, 6).North = True
+        Map(7, 6).East = True
+        Map(7, 6).South = True
+        Map(7, 6).West = True
+        Map(7, 6).items = ""
+            
+        Map(7, 7).Name = ""
+        Map(7, 7).Description = ""
+        Map(7, 7).North = True
+        Map(7, 7).East = True
+        Map(7, 7).South = True
+        Map(7, 7).West = True
+        Map(7, 7).items = ""
+              
+        Map(7, 8).Name = ""
+        Map(7, 8).Description = ""
+        Map(7, 8).North = True
+        Map(7, 8).East = True
+        Map(7, 8).South = True
+        Map(7, 8).West = True
+        Map(7, 8).items = ""
+              
+        Map(7, 9).Name = ""
+        Map(7, 9).Description = ""
+        Map(7, 9).North = True
+        Map(7, 9).East = True
+        Map(7, 9).South = True
+        Map(7, 9).West = True
+        Map(7, 9).items = ""
+              
+        Map(7, 10).Name = ""
+        Map(7, 10).Description = ""
+        Map(7, 10).North = True
+        Map(7, 10).East = True
+        Map(7, 10).South = True
+        Map(7, 10).West = True
+        Map(7, 10).items = ""
+        
+        'start of 8
+        
+        Map(8, 0).Name = ""
+        Map(8, 0).Description = ""
+        Map(8, 0).North = True
+        Map(8, 0).East = True
+        Map(8, 0).South = True
+        Map(8, 0).West = True
+        Map(8, 0).items = ""
+            
+        Map(8, 1).Name = ""
+        Map(8, 1).Description = ""
+        Map(8, 1).North = True
+        Map(8, 1).East = True
+        Map(8, 1).South = True
+        Map(8, 1).West = True
+        Map(8, 1).items = ""
+        
+        Map(8, 2).Name = ""
+        Map(8, 2).Description = ""
+        Map(8, 2).North = True
+        Map(8, 2).East = True
+        Map(8, 2).South = True
+        Map(8, 2).West = True
+        Map(8, 2).items = ""
+            
+        Map(8, 3).Name = ""           
+        Map(8, 3).Description = ""
+        Map(8, 3).North = True
+        Map(8, 3).East = True
+        Map(8, 3).South = True
+        Map(8, 3).West = True
+        Map(8, 3).items = ""
+             
+        Map(8, 4).Name = ""
+        Map(8, 4).Description = ""
+        Map(8, 4).North = True
+        Map(8, 4).East = True
+        Map(8, 4).South = True
+        Map(8, 4).West = True
+        Map(8, 4).items = ""
+            
+        Map(8, 5).Name = ""
+        Map(8, 5).Description = ""
+        Map(8, 5).North = True
+        Map(8, 5).East = True
+        Map(8, 5).South = True
+        Map(8, 5).West = True
+        Map(8, 5).items = ""
+              
+        Map(8, 6).Name = ""
+        Map(8, 6).Description = ""
+        Map(8, 6).North = True
+        Map(8, 6).East = True
+        Map(8, 6).South = True
+        Map(8, 6).West = True
+        Map(8, 6).items = ""
+            
+        Map(8, 7).Name = ""
+        Map(8, 7).Description = ""
+        Map(8, 7).North = True
+        Map(8, 7).East = True
+        Map(8, 7).South = True
+        Map(8, 7).West = True
+        Map(8, 7).items = ""
+              
+        Map(8, 8).Name = ""
+        Map(8, 8).Description = ""
+        Map(8, 8).North = True
+        Map(8, 8).East = True
+        Map(8, 8).South = True
+        Map(8, 8).West = True
+        Map(8, 8).items = ""
+              
+        Map(8, 9).Name = ""
+        Map(8, 9).Description = ""
+        Map(8, 9).North = True
+        Map(8, 9).East = True
+        Map(8, 9).South = True
+        Map(8, 9).West = True
+        Map(8, 9).items = ""
+              
+        Map(8, 10).Name = ""
+        Map(8, 10).Description = ""
+        Map(8, 10).North = True
+        Map(8, 10).East = True
+        Map(8, 10).South = True
+        Map(8, 10).West = True
+        Map(8, 10).items = ""
+        
+        'start of 9
+        
+        Map(9, 0).Name = ""
+        Map(9, 0).Description = ""
+        Map(9, 0).North = True
+        Map(9, 0).East = True
+        Map(9, 0).South = True
+        Map(9, 0).West = True
+        Map(9, 0).items = ""
+            
+        Map(9, 1).Name = ""
+        Map(9, 1).Description = ""
+        Map(9, 1).North = True
+        Map(9, 1).East = True
+        Map(9, 1).South = True
+        Map(9, 1).West = True
+        Map(9, 1).items = ""
+        
+        Map(9, 2).Name = ""
+        Map(9, 2).Description = ""
+        Map(9, 2).North = True
+        Map(9, 2).East = True
+        Map(9, 2).South = True
+        Map(9, 2).West = True
+        Map(9, 2).items = ""
+            
+        Map(9, 3).Name = ""           
+        Map(9, 3).Description = ""
+        Map(9, 3).North = True
+        Map(9, 3).East = True
+        Map(9, 3).South = True
+        Map(9, 3).West = True
+        Map(9, 3).items = ""
+             
+        Map(9, 4).Name = ""
+        Map(9, 4).Description = ""
+        Map(9, 4).North = True
+        Map(9, 4).East = True
+        Map(9, 4).South = True
+        Map(9, 4).West = True
+        Map(9, 4).items = ""
+            
+        Map(9, 5).Name = ""
+        Map(9, 5).Description = ""
+        Map(9, 5).North = True
+        Map(9, 5).East = True
+        Map(9, 5).South = True
+        Map(9, 5).West = True
+        Map(9, 5).items = ""
+              
+        Map(9, 6).Name = ""
+        Map(9, 6).Description = ""
+        Map(9, 6).North = True
+        Map(9, 6).East = True
+        Map(9, 6).South = True
+        Map(9, 6).West = True
+        Map(9, 6).items = ""
+            
+        Map(9, 7).Name = ""
+        Map(9, 7).Description = ""
+        Map(9, 7).North = True
+        Map(9, 7).East = True
+        Map(9, 7).South = True
+        Map(9, 7).West = True
+        Map(9, 7).items = ""
+              
+        Map(9, 8).Name = ""
+        Map(9, 8).Description = ""
+        Map(9, 8).North = True
+        Map(9, 8).East = True
+        Map(9, 8).South = True
+        Map(9, 8).West = True
+        Map(9, 8).items = ""
+              
+        Map(9, 9).Name = ""
+        Map(9, 9).Description = ""
+        Map(9, 9).North = True
+        Map(9, 9).East = True
+        Map(9, 9).South = True
+        Map(9, 9).West = True
+        Map(9, 9).items = ""
+              
+        Map(9, 10).Name = ""
+        Map(9, 10).Description = ""
+        Map(9, 10).North = True
+        Map(9, 10).East = True
+        Map(9, 10).South = True
+        Map(9, 10).West = True
+        Map(9, 10).items = ""
+        
+        'start of 10
+        
+        Map(10, 0).Name = ""
+        Map(10, 0).Description = ""
+        Map(10, 0).North = True
+        Map(10, 0).East = True
+        Map(10, 0).South = True
+        Map(10, 0).West = True
+        Map(10, 0).items = ""
+            
+        Map(10, 1).Name = ""
+        Map(10, 1).Description = ""
+        Map(10, 1).North = True
+        Map(10, 1).East = True
+        Map(10, 1).South = True
+        Map(10, 1).West = True
+        Map(10, 1).items = ""
+        
+        Map(10, 2).Name = ""
+        Map(10, 2).Description = ""
+        Map(10, 2).North = True
+        Map(10, 2).East = True
+        Map(10, 2).South = True
+        Map(10, 2).West = True
+        Map(10, 2).items = ""
+            
+        Map(10, 3).Name = ""           
+        Map(10, 3).Description = ""
+        Map(10, 3).North = True
+        Map(10, 3).East = True
+        Map(10, 3).South = True
+        Map(10, 3).West = True
+        Map(10, 3).items = ""
+             
+        Map(10, 4).Name = ""
+        Map(10, 4).Description = ""
+        Map(10, 4).North = True
+        Map(10, 4).East = True
+        Map(10, 4).South = True
+        Map(10, 4).West = True
+        Map(10, 4).items = ""
+            
+        Map(10, 5).Name = ""
+        Map(10, 5).Description = ""
+        Map(10, 5).North = True
+        Map(10, 5).East = True
+        Map(10, 5).South = True
+        Map(10, 5).West = True
+        Map(10, 5).items = ""
+              
+        Map(10, 6).Name = ""
+        Map(10, 6).Description = ""
+        Map(10, 6).North = True
+        Map(10, 6).East = True
+        Map(10, 6).South = True
+        Map(10, 6).West = True
+        Map(10, 6).items = ""
+            
+        Map(10, 7).Name = ""
+        Map(10, 7).Description = ""
+        Map(10, 7).North = True
+        Map(10, 7).East = True
+        Map(10, 7).South = True
+        Map(10, 7).West = True
+        Map(10, 7).items = ""
+              
+        Map(10, 8).Name = ""
+        Map(10, 8).Description = ""
+        Map(10, 8).North = True
+        Map(10, 8).East = True
+        Map(10, 8).South = True
+        Map(10, 8).West = True
+        Map(10, 8).items = ""
+              
+        Map(10, 9).Name = ""
+        Map(10, 9).Description = ""
+        Map(10, 9).North = True
+        Map(10, 9).East = True
+        Map(10, 9).South = True
+        Map(10, 9).West = True
+        Map(10, 9).items = ""
+              
+        Map(10, 10).Name = ""
+        Map(10, 10).Description = ""
+        Map(10, 10).North = True
+        Map(10, 10).East = True
+        Map(10, 10).South = True
+        Map(10, 10).West = True
+        Map(10, 10).items = ""
+        
+        console.WriteLine(place(playerx, playery))
     End Sub
+    
     Sub boss()
         Dim path As String
         Dim choice As String
-
+        Dim health As Integer = 100
 
         Console.WriteLine()
         Console.WriteLine(bar)
