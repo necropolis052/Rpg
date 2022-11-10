@@ -73,9 +73,9 @@ Module game
         Console.WriteLine("           `""     G..m-""^m`m'")
         Console.ForegroundColor = ConsoleColor.White
         Console.WriteLine()
-        console.Writeline("                                         .: Play :.                  ")
-        console.Writeline("                                         .: Help  :.                  ")
-        console.Writeline("                                         .: Quit :.                  ")
+        console.Writeline("                                                                           .: Play :.                  ")
+        console.Writeline("                                                                           .: Help  :.                  ")
+        console.Writeline("                                                                           .: Quit :.                  ")
         Console.WriteLine(bar)
         Console.WriteLine()
         console.write("> ")
