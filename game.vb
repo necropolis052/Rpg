@@ -13,40 +13,49 @@ Structure location
 End Structure
 
 Structure self
-     dim name as string
+     dim Pname as string
      dim hp as integer
      dim mp as integer
      dim status_effects() as string
 End Structure
  
 Module game
-    dim playerx, playery as integer
-    Function place(a as integer, b as integer) as string
-        for x = 0 to (map(a, b).name.length + 3)
-            console.Write("#")
-        Next
-        console.Writeline()
-        console.WriteLine("# " & map(a, b).name & " #")
-        for x = 0 to (map(a, b).name.length + 3)
-            console.Write("#")
-        Next
-        console.WriteLine()
-        console.WriteLine("Description: " & map(a, b).Description)
-        console.WriteLine("The items in " & map(a, b).name & " are as follows: " & map(a, b).items)
-        
-        
+    
+   
+    
+    Function help_menu() as string
+            dim x as string
+            console.clear
+            console.writeline(bar)
+            console.WriteLine("                                                  Type a command such as 'move' then 'left' to nagivate the map .")
+            console.writeline("                                               Inputs such as 'look' or 'examine' will let you interact with rooms.")
+            console.writeline("                                                           Please ensure to type in lowercase for ease.")
+            console.writeline(bar)
+            console.writeline("                                                               Please select an option to continue.     ")
+            console.writeline(bar)
+            console.writeline("                                                                            .: Play :.                  ")
+            console.writeline("                                                                            .: Help :.                  ")
+            console.writeline("                                                                            .: Quit :.                  ")
+            x = console.ReadLine()
+            title_screen_options(x)
     end Function
     
-    Dim Map(10, 10) As location
-    Dim bar As String = "+----------------------------------------------------------------------------------------------------------------------------------------------------------+"
-    Dim x As Integer
-    Dim name As String
-    dim res as string
-    Sub Main()
-        ''Console.WindowWidth = Console.LargestWindowWidth
-        ''Console.WindowHeight = Console.LargestWindowHeight
-        ''Console.WindowWidth = 156
-        ''Console.WindowHeight = 40
+    Function title_screen_options(x as string) as string
+        dim a as string  = "play"
+        dim b as string  = "help"
+        dim c as string  = "quit"
+        dim opt as string
+        opt = x
+        if opt.tolower = ("play") then
+            start()
+        else if opt.tolower = ("quit") then
+            end
+        else if opt.tolower = ("help") then
+            help_menu()  
+        end if   
+    end Function
+    
+    Function title_screen() as string
         Console.WriteLine()
         Console.WriteLine(bar)
         For x = 0 To 12
@@ -64,25 +73,53 @@ Module game
         Console.WriteLine("           `""     G..m-""^m`m'")
         Console.ForegroundColor = ConsoleColor.White
         Console.WriteLine()
-        Console.WriteLine("                                                               Would you like to start a game? y/n ")
-        For x = 0 To 15
-            Console.WriteLine()
-        Next
+        console.Writeline("                                         .: Play :.                  ")
+        console.Writeline("                                         .: Help  :.                  ")
+        console.Writeline("                                         .: Quit :.                  ")
         Console.WriteLine(bar)
         Console.WriteLine()
-        If Console.ReadLine = "y" Then
-            Console.Clear()
-            Console.WriteLine("What is your name brave adventurer?: ")
-            name = Console.ReadLine()
-            start()
-        Else
-            End
-        End If
-
-
+        console.write("> ")
+        input = console.ReadLine()
+        title_screen_options(input)
+    end Function
+    
+    Function commands(command as string) as string
+        command = command.tolower
+        
+    end Function
+    
+    Function print_location(a, b) as string
+    
+        for x = 0 to (map(a, b).name.length + 3)
+            console.Write("#")
+        Next
+        console.Writeline()
+        console.WriteLine("# " & map(a, b).name & " #")
+        for x = 0 to (map(a, b).name.length + 3)
+            console.Write("#")
+        Next
+        console.WriteLine()
+        console.WriteLine("Description: " & map(a, b).Description)
+        console.WriteLine("The items in " & map(a, b).name & " are as follows: " & map(a, b).items)
+        
+    end Function
+    
+    dim playerx, playery as integer
+    Dim Map(10, 10) As location
+    Dim bar As String = "+----------------------------------------------------------------------------------------------------------------------------------------------------------+"
+    Dim x As Integer
+    Dim name As self
+    dim res, input as string
+    
+    Sub Main()
+        
+        title_screen()
+        
     End Sub
     Sub start()
-    
+        console.clear
+        console.Writeline("what's your name brave adventurer? ")
+        name.pname = console.ReadLine()
         console.clear
         playerx = 0 
         playery = 0
@@ -1083,7 +1120,7 @@ Module game
         Map(10, 10).West = True
         Map(10, 10).items = ""
         
-        console.WriteLine(place(playerx, playery))
+        console.WriteLine(print_location(playerx, playery))
     End Sub
     
     Sub boss()
@@ -1094,7 +1131,7 @@ Module game
         Console.WriteLine()
         Console.WriteLine(bar)
         Console.ForegroundColor = ConsoleColor.DarkMagenta
-        Console.WriteLine("                                        " & name & ", You come across a forest. The entrance to the forest has 2 paths ")
+        Console.WriteLine("                                        " & ", You come across a forest. The entrance to the forest has 2 paths ")
         Console.WriteLine(" one Is thick With brambles And the other Is clear but the trees wind In a way that Is almost contorting your perspective Of how far the forest extends. ")
         Console.ForegroundColor = ConsoleColor.White
         Console.WriteLine(bar)
