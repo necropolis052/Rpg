@@ -20,6 +20,7 @@ End Structure
 
 Structure self
     Dim Pname As String
+    dim pclass as String
     Dim hp As Integer
     Dim mp As Integer
     Dim status_effects() As String
@@ -215,7 +216,7 @@ Module game
 
     End Function
 
-    Function print_location(a, b) As String
+    Function print_location(a as integer, b as integer) As String
 
         For x = 0 To (Map(a, b).Name.Length + 3)
             Console.Write("#")
@@ -251,27 +252,37 @@ Module game
 
     End Sub
     Sub start()
+        dim a as String
         Console.Clear()
         Console.WriteLine("what's your name brave adventurer? ")
         name.Pname = Console.ReadLine()
         Console.Clear()
+        Console.WriteLine("####CLASS_SELECTION####")
+        Console.WriteLine("1. Warrior")
+        Console.WriteLine("2. Mage")
+        Console.WriteLine("3. Rogue")
+        Console.WriteLine()
+        Console.WriteLine("select what class you want to play")
+        Console.WriteLine()
+        Console.Write("> ")
+        
         playerx = 0
-        playery = 0
+        playery = 1
 
-        Map(0, 0).Name = "james's house"
-        Map(0, 0).Description = "house"
+        Map(0, 0).Name = "Living room"
+        Map(0, 0).Description = ""
         Map(0, 0).North = False
         Map(0, 0).East = True
         Map(0, 0).South = True
         Map(0, 0).West = False
         Map(0, 0).items = "james"
 
-        Map(0, 1).Name = ""
-        Map(0, 1).Description = ""
+        Map(0, 1).Name = "James's front garden"
+        Map(0, 1).Description = "you're stood south of the door to the house and north of the path to the village centre. rock is on your left and James's wall is on your right"
         Map(0, 1).North = True
-        Map(0, 1).East = True
+        Map(0, 1).East = false
         Map(0, 1).South = True
-        Map(0, 1).West = False
+        Map(0, 1).West = false
         Map(0, 1).items = ""
 
         Map(0, 2).Name = ""
@@ -1285,6 +1296,36 @@ Module game
         inv(7).item_desc = ""
         inv(7).effect = ""
         inv(7).exists = False
+        
+        a = console.ReadLine()
+        a = a.tolower
+        if a.contains("1") or a.contains("warrior") then
+            name.hp = 100
+            name.mp = 0
+            name.pclass = "warrior"
+            inv(1).exists = true
+            console.clear()
+        ElseIf a.contains("2") or a.contains("mage") then
+            name.hp = 60
+            name.mp = 40
+            name.pclass = "mage"
+            inv(2).exists = true
+            console.clear()
+        ElseIf a.contains("3") or a.contains("rogue") then
+            name.hp = 80
+            name.mp = 20
+            name.pclass = "rogue"
+            inv(3).exists = true
+            inv(4).exists = true
+            console.clear()
+        Else
+            console.Writeline("Your selection was invalid, automatically picking warrior for you.")
+            name.hp = 100
+            name.mp = 0
+            name.pclass = "warrior"
+            inv(1).exists = true
+            console.clear()
+        end if
 
         inp()
     End Sub
