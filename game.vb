@@ -25,9 +25,43 @@ Structure self
     Dim status_effects() As String
 End Structure
 
+Structure inventory
+        dim item_number as integer
+        Dim item_name As String
+        Dim item_desc As String
+        Dim effect As String
+        Dim exists As Boolean
+End Structure
+
 Module game
-
-
+    
+    Function bag() As String
+        dim a as String
+        dim b as integer
+        console.clear()
+        console.WriteLine("##INVENTORY_LIST##")
+        console.WriteLine()
+        For x = 0 To 7
+            if inv(x).exists = true then
+                console.Write(x + 1 & ". ")
+                Console.WriteLine(inv(x).item_name)
+            end if
+        
+        Next
+        console.WriteLine()
+        console.Writeline("Choose one with a number or exit")
+        console.Write("> ")
+        a = console.ReadLine()
+        a = a.tolower
+            
+        if a = "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" then
+            b = Cint(a)
+            console.WriteLine(inv(b-1).item_desc)
+            console.WriteLine()
+            console.WriteLine()
+        end if
+        inp()    
+    End Function
 
     Function help_menu() As String
         Dim x As String
@@ -52,11 +86,11 @@ Module game
         Dim c As String = "quit"
         Dim opt As String
         opt = x
-        If opt.ToLower = ("play") Then
+        If opt.ToLower.contains("play") Then
             start()
-        ElseIf opt.ToLower = ("quit") Then
+        ElseIf opt.ToLower.contains("quit") Then
             End
-        ElseIf opt.ToLower = ("help") Then
+        ElseIf opt.ToLower.contains("help") Then
             help_menu()
         End If
     End Function
@@ -108,9 +142,10 @@ Module game
 
     Function commands(command As String) As String
         command = command.ToLower
-        If command.Contains("north") Then
+        If command.Contains("north") or command.contains("up") Then
             If Map(playerx, playery).North = True Then
                 playery = playery - 1
+                Console.Clear()
                 'loops back to input function to catch another command
                 inp()
             Else
@@ -123,9 +158,10 @@ Module game
                 inp()
 
             End If
-        ElseIf command.Contains("east") Then
+        ElseIf command.Contains("east") or command.contains("right") Then
             If Map(playerx, playery).East = True Then
                 playerx = playerx + 1
+                Console.Clear()
                 inp()
             Else
                 Console.Clear()
@@ -138,9 +174,10 @@ Module game
 
             End If
 
-        ElseIf command.Contains("south") Then
+        ElseIf command.Contains("south") or command.contains("down") Then
             If Map(playerx, playery).South = True Then
                 playery = playery + 1
+                Console.Clear()
                 inp()
             Else
                 Console.Clear()
@@ -152,9 +189,10 @@ Module game
                 inp()
 
             End If
-        ElseIf command.Contains("west") Then
+        ElseIf command.Contains("west") or command.contains("left") Then
             If Map(playerx, playery).West = True Then
                 playerx = playerx - 1
+                Console.Clear()
                 inp()
             Else
                 Console.Clear()
@@ -166,12 +204,12 @@ Module game
                 inp()
 
             End If
-        ElseIf command = "inventory" Then
+        ElseIf command.contains("inventory") or command.contains("inv") Then
+            bag()
+        ElseIf command.contains("block") or command.contains("sheild") or command.contains("stop") Then
 
-        ElseIf command = "block" Then
-
-        ElseIf command = "attack" Then
-
+        ElseIf command.contains("kill") or command.contains("attack") Then
+            
         End If
 
 
@@ -199,7 +237,14 @@ Module game
     Dim x As Integer
     Dim name As self
     Dim res As String
-
+    
+    Dim inv(7) As inventory
+    Dim inv_num As Integer
+    Dim Inv_action As String
+    Dim item_chosen As Boolean
+    Dim inv_end As Boolean
+    
+    
     Sub Main()
 
         title_screen()
@@ -1200,6 +1245,46 @@ Module game
         Map(10, 10).South = False
         Map(10, 10).West = True
         Map(10, 10).items = ""
+        
+        inv(0).item_name = "Empty slot 1"
+        inv(0).item_desc = "this is an item"
+        inv(0).effect = ""
+        inv(0).exists = true
+
+        inv(1).item_name = "War axe"
+        inv(1).item_desc = "A large, dulled, silver headed axe with a smooth leather wrapped wooden handle"
+        inv(1).effect = "standard damage with slashing damage effect"
+        inv(1).exists = False
+
+        inv(2).item_name = "Mage staff"
+        inv(2).item_desc = "A long, rough, tree branch like staff which bearly manages to focus the mystical energy within you."
+        inv(2).effect = "tbt"
+        inv(2).exists = False
+
+        inv(3).item_name = "worn blades"
+        inv(3).item_desc = "two short blades, slightly dulled but still usable"
+        inv(3).effect = "slashing damage"
+        inv(3).exists = False
+
+        inv(4).item_name = "Old short bow"
+        inv(4).item_desc = "An ancient short bow that does minimal damage due to how frail it is"
+        inv(4).effect = "peircing damage"
+        inv(4).exists = False
+
+        inv(5).item_name = ""
+        inv(5).item_desc = ""
+        inv(5).effect = ""
+        inv(5).exists = False
+
+        inv(6).item_name = ""
+        inv(6).item_desc = ""
+        inv(6).effect = ""
+        inv(6).exists = False
+
+        inv(7).item_name = ""
+        inv(7).item_desc = ""
+        inv(7).effect = ""
+        inv(7).exists = False
 
         inp()
     End Sub
