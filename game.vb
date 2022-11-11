@@ -93,7 +93,7 @@ Module game
 
     Function inp() As String
         Dim input As String
-        Console.Clear()
+
         Console.WriteLine(print_location(playerx, playery))
         Console.WriteLine()
         Console.Write("> ")
@@ -108,58 +108,62 @@ Module game
 
     Function commands(command As String) As String
         command = command.ToLower
-        If command = "north" Then
+        If command.Contains("north") Then
             If Map(playerx, playery).North = True Then
                 playery = playery - 1
                 'loops back to input function to catch another command
                 inp()
             Else
+                Console.Clear()
                 Console.WriteLine("You find yourself unable to walk in that directon as there's no exits. ")
                 Console.WriteLine()
                 Console.WriteLine("Please try entering your command again")
-                Console.Write("> ")
-                command = Console.ReadLine()
-                Console.WriteLine(inp(command))
+                Console.WriteLine()
+
+                inp()
 
             End If
-        ElseIf command = "east" Then
+        ElseIf command.Contains("east") Then
             If Map(playerx, playery).East = True Then
                 playerx = playerx + 1
                 inp()
             Else
+                Console.Clear()
                 Console.WriteLine("You find yourself unable to walk in that directon as there's no exits. ")
                 Console.WriteLine()
                 Console.WriteLine("Please try entering your command again")
-                Console.Write("> ")
-                command = Console.ReadLine()
-                Console.WriteLine(inp(command))
+                Console.WriteLine()
+
+                inp()
 
             End If
 
-        ElseIf command = "south" Then
+        ElseIf command.Contains("south") Then
             If Map(playerx, playery).South = True Then
                 playery = playery + 1
                 inp()
             Else
+                Console.Clear()
                 Console.WriteLine("You find yourself unable to walk in that directon as there's no exits. ")
                 Console.WriteLine()
                 Console.WriteLine("Please try entering your command again")
-                Console.Write("> ")
-                command = Console.ReadLine()
-                Console.WriteLine(inp(command))
+                Console.WriteLine()
+
+                inp()
 
             End If
-        ElseIf command = "west" Then
+        ElseIf command.Contains("west") Then
             If Map(playerx, playery).West = True Then
                 playerx = playerx - 1
                 inp()
             Else
+                Console.Clear()
                 Console.WriteLine("You find yourself unable to walk in that directon as there's no exits. ")
                 Console.WriteLine()
                 Console.WriteLine("Please try entering your command again")
-                Console.Write("> ")
-                command = Console.ReadLine()
-                Console.WriteLine(inp(command))
+                Console.WriteLine()
+
+                inp()
 
             End If
         ElseIf command = "inventory" Then
