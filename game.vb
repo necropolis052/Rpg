@@ -3,6 +3,7 @@ Imports System.ComponentModel.Design
 Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Math
+Imports System.Reflection.Metadata.Ecma335
 
 '#############################TO DO LIST#############################
 '
@@ -20,48 +21,76 @@ End Structure
 
 Structure self
     Dim Pname As String
-    dim pclass as String
+    Dim pclass As String
     Dim hp As Integer
     Dim mp As Integer
     Dim status_effects() As String
 End Structure
 
 Structure inventory
-        dim item_number as integer
-        Dim item_name As String
-        Dim item_desc As String
-        Dim effect As String
-        Dim exists As Boolean
+    Dim item_number As Integer
+    Dim item_name As String
+    Dim item_desc As String
+    Dim effect As String
+    Dim exists As Boolean
 End Structure
 
 Module game
-    
+
     Function bag() As String
-        dim a as String
-        dim b as integer
-        console.clear()
-        console.WriteLine("##INVENTORY_LIST##")
-        console.WriteLine()
+        Dim p As Integer
+        p = 1
+
+        Dim a As String
+        Dim b As Integer
+        Console.Clear()
+        Console.WriteLine("##INVENTORY_LIST##")
+        Console.WriteLine()
         For x = 0 To 7
-            if inv(x).exists = true then
-                console.Write(x + 1 & ". ")
+            If inv(x).exists = True Then
+                Console.Write(p & ". ")
                 Console.WriteLine(inv(x).item_name)
-            end if
-        
+                p = p + 1
+            End If
+
         Next
-        console.WriteLine()
-        console.Writeline("Choose one with a number or exit")
-        console.Write("> ")
-        a = console.ReadLine()
-        a = a.tolower
-            
-        if a = "0" or "1" or "2" or "3" or "4" or "5" or "6" or "7" then
-            b = Cint(a)
-            console.WriteLine(inv(b-1).item_desc)
-            console.WriteLine()
-            console.WriteLine()
-        end if
-        inp()    
+        Console.WriteLine()
+        Console.WriteLine("Choose one with a number or exit")
+        Console.Write("> ")
+        a = Console.ReadLine()
+        a = a.ToLower
+
+        If a = "0" Or "1" Or "2" Or "3" Or "4" Or "5" Or "6" Or "7" Then
+            If name.pclass = "warrior" Then
+                b = CInt(a)
+                Console.WriteLine(inv(b - 1).item_desc)
+                Console.WriteLine()
+                Console.WriteLine()
+            ElseIf name.pclass = "mage" Then
+                If b > 1 Then
+                    b = CInt(a)
+                    Console.WriteLine(inv(b).item_desc)
+                    Console.WriteLine()
+                    Console.WriteLine()
+                Else
+                    Console.WriteLine(inv(0).item_desc)
+                    Console.WriteLine()
+                    Console.WriteLine()
+                End If
+            ElseIf name.pclass = "rogue" Then
+                b = CInt(a)
+                If b > 1 Then
+                    Console.WriteLine(inv(b + 1).item_desc)
+                    Console.WriteLine()
+                    Console.WriteLine()
+                Else
+                    Console.WriteLine(inv(0).item_desc)
+                    Console.WriteLine()
+                    Console.WriteLine()
+                End If
+            End If
+        End If
+        inp()
     End Function
 
     Function help_menu() As String
@@ -87,11 +116,11 @@ Module game
         Dim c As String = "quit"
         Dim opt As String
         opt = x
-        If opt.ToLower.contains("play") Then
+        If opt.ToLower.Contains("play") Then
             start()
-        ElseIf opt.ToLower.contains("quit") Then
+        ElseIf opt.ToLower.Contains("quit") Then
             End
-        ElseIf opt.ToLower.contains("help") Then
+        ElseIf opt.ToLower.Contains("help") Then
             help_menu()
         End If
     End Function
@@ -143,7 +172,7 @@ Module game
 
     Function commands(command As String) As String
         command = command.ToLower
-        If command.Contains("north") or command.contains("up") Then
+        If command.Contains("north") Or command.Contains("up") Then
             If Map(playerx, playery).North = True Then
                 playery = playery - 1
                 Console.Clear()
@@ -159,7 +188,7 @@ Module game
                 inp()
 
             End If
-        ElseIf command.Contains("east") or command.contains("right") Then
+        ElseIf command.Contains("east") Or command.Contains("right") Then
             If Map(playerx, playery).East = True Then
                 playerx = playerx + 1
                 Console.Clear()
@@ -175,7 +204,7 @@ Module game
 
             End If
 
-        ElseIf command.Contains("south") or command.contains("down") Then
+        ElseIf command.Contains("south") Or command.Contains("down") Then
             If Map(playerx, playery).South = True Then
                 playery = playery + 1
                 Console.Clear()
@@ -190,7 +219,7 @@ Module game
                 inp()
 
             End If
-        ElseIf command.Contains("west") or command.contains("left") Then
+        ElseIf command.Contains("west") Or command.Contains("left") Then
             If Map(playerx, playery).West = True Then
                 playerx = playerx - 1
                 Console.Clear()
@@ -205,18 +234,29 @@ Module game
                 inp()
 
             End If
-        ElseIf command.contains("inventory") or command.contains("inv") Then
+        ElseIf command.Contains("inventory") Or command.Contains("inv") Then
             bag()
-        ElseIf command.contains("block") or command.contains("sheild") or command.contains("stop") Then
+        ElseIf command.Contains("block") Or command.Contains("sheild") Or command.Contains("stop") Then
 
-        ElseIf command.contains("kill") or command.contains("attack") Then
-            
+        ElseIf command.Contains("kill") Or command.Contains("attack") Then
+
+        ElseIf command.Contains("quit") Then
+            Console.WriteLine("are you sure that you want to quit the game y/n")
+            If Console.ReadLine.ToLower.Contains("y") Then
+                End
+            Else
+                Console.WriteLine("ok")
+                inp()
+            End If
+            'ElseIf command.Contains("help") Then
+            'help_menu()
+            'end if
         End If
 
 
     End Function
 
-    Function print_location(a as integer, b as integer) As String
+    Function print_location(a As Integer, b As Integer) As String
 
         For x = 0 To (Map(a, b).Name.Length + 3)
             Console.Write("#")
@@ -228,7 +268,10 @@ Module game
         Next
         Console.WriteLine()
         Console.WriteLine("Description: " & Map(a, b).Description)
-        Console.WriteLine("The items in " & Map(a, b).Name & " are as follows: " & Map(a, b).items)
+        If Map(a, b).Description.Length > 1 Then
+            Console.WriteLine("The items in " & Map(a, b).Name & " are as follows: " & Map(a, b).items)
+        End If
+
 
     End Function
 
@@ -238,21 +281,22 @@ Module game
     Dim x As Integer
     Dim name As self
     Dim res As String
-    
+
     Dim inv(7) As inventory
     Dim inv_num As Integer
     Dim Inv_action As String
     Dim item_chosen As Boolean
     Dim inv_end As Boolean
-    
-    
+
+
+
     Sub Main()
 
         title_screen()
 
     End Sub
     Sub start()
-        dim a as String
+        Dim a As String
         Console.Clear()
         Console.WriteLine("what's your name brave adventurer? ")
         name.Pname = Console.ReadLine()
@@ -265,7 +309,7 @@ Module game
         Console.WriteLine("select what class you want to play")
         Console.WriteLine()
         Console.Write("> ")
-        
+
         playerx = 0
         playery = 1
 
@@ -280,9 +324,9 @@ Module game
         Map(0, 1).Name = "James's front garden"
         Map(0, 1).Description = "you're stood south of the door to the house and north of the path to the village centre. rock is on your left and James's wall is on your right"
         Map(0, 1).North = True
-        Map(0, 1).East = false
+        Map(0, 1).East = False
         Map(0, 1).South = True
-        Map(0, 1).West = false
+        Map(0, 1).West = False
         Map(0, 1).items = ""
 
         Map(0, 2).Name = ""
@@ -541,7 +585,7 @@ Module game
 
         Map(3, 0).Name = ""
         Map(3, 0).Description = ""
-        Map(3, 0).north = false
+        Map(3, 0).North = False
         Map(3, 0).East = True
         Map(3, 0).South = True
         Map(3, 0).West = True
@@ -1256,185 +1300,90 @@ Module game
         Map(10, 10).South = False
         Map(10, 10).West = True
         Map(10, 10).items = ""
-        
+
         inv(0).item_name = "Empty slot 1"
         inv(0).item_desc = "this is an item"
         inv(0).effect = ""
-        inv(0).exists = true
+        inv(0).exists = True
+        inv(0).item_number = 0
 
         inv(1).item_name = "War axe"
         inv(1).item_desc = "A large, dulled, silver headed axe with a smooth leather wrapped wooden handle"
         inv(1).effect = "standard damage with slashing damage effect"
         inv(1).exists = False
 
+
         inv(2).item_name = "Mage staff"
         inv(2).item_desc = "A long, rough, tree branch like staff which bearly manages to focus the mystical energy within you."
         inv(2).effect = "tbt"
         inv(2).exists = False
+
 
         inv(3).item_name = "worn blades"
         inv(3).item_desc = "two short blades, slightly dulled but still usable"
         inv(3).effect = "slashing damage"
         inv(3).exists = False
 
+
         inv(4).item_name = "Old short bow"
         inv(4).item_desc = "An ancient short bow that does minimal damage due to how frail it is"
         inv(4).effect = "peircing damage"
         inv(4).exists = False
+
 
         inv(5).item_name = ""
         inv(5).item_desc = ""
         inv(5).effect = ""
         inv(5).exists = False
 
+
         inv(6).item_name = ""
         inv(6).item_desc = ""
         inv(6).effect = ""
         inv(6).exists = False
 
+
         inv(7).item_name = ""
         inv(7).item_desc = ""
         inv(7).effect = ""
         inv(7).exists = False
-        
-        a = console.ReadLine()
-        a = a.tolower
-        if a.contains("1") or a.contains("warrior") then
+
+
+        a = Console.ReadLine()
+        a = a.ToLower
+        If a.Contains("1") Or a.Contains("warrior") Then
             name.hp = 100
             name.mp = 0
             name.pclass = "warrior"
-            inv(1).exists = true
-            console.clear()
-        ElseIf a.contains("2") or a.contains("mage") then
+
+            inv(1).exists = True
+            Console.Clear()
+        ElseIf a.Contains("2") Or a.Contains("mage") Then
             name.hp = 60
             name.mp = 40
             name.pclass = "mage"
-            inv(2).exists = true
-            console.clear()
-        ElseIf a.contains("3") or a.contains("rogue") then
+            inv(2).exists = True
+            inv(2).item_number = 2
+            Console.Clear()
+        ElseIf a.Contains("3") Or a.Contains("rogue") Then
             name.hp = 80
             name.mp = 20
             name.pclass = "rogue"
-            inv(3).exists = true
-            inv(4).exists = true
-            console.clear()
+            inv(3).exists = True
+            inv(4).exists = True
+            inv(3).item_number = 2
+            inv(4).item_number = 3
+            Console.Clear()
         Else
-            console.Writeline("Your selection was invalid, automatically picking warrior for you.")
+            Console.WriteLine("Your selection was invalid, automatically picking warrior for you.")
             name.hp = 100
             name.mp = 0
             name.pclass = "warrior"
-            inv(1).exists = true
-            console.clear()
-        end if
-
-        inp()
-    End Sub
-
-    Sub boss()
-        Dim path As String
-        Dim choice As String
-        Dim health As Integer = 100
-
-        Console.WriteLine()
-        Console.WriteLine(bar)
-        Console.ForegroundColor = ConsoleColor.DarkMagenta
-        Console.WriteLine("                                        " & ", You come across a forest. The entrance to the forest has 2 paths ")
-        Console.WriteLine(" one Is thick With brambles And the other Is clear but the trees wind In a way that Is almost contorting your perspective Of how far the forest extends. ")
-        Console.ForegroundColor = ConsoleColor.White
-        Console.WriteLine(bar)
-        For x = 0 To 29
-            Console.WriteLine()
-        Next
-        Console.WriteLine(bar)
-        Console.WriteLine(" Health " & health & "/100 Press 1 or 2 to select your path: ")
-        Console.WriteLine(bar)
-        Console.WriteLine()
-        path = Console.ReadLine
-
-        If path = "1" Then
+            inv(1).exists = True
             Console.Clear()
-            Console.WriteLine(bar)
-            Console.ForegroundColor = ConsoleColor.DarkMagenta
-            Console.WriteLine("  Once you've walked far enough into the brambles, a bright light appears along the path and as it dissapates a pair of wings appear floating in the air.")
-            Console.ForegroundColor = ConsoleColor.Red
-            Console.WriteLine()
-            Console.WriteLine("                                                                           The Angel")
-            Console.WriteLine()
-            Console.ForegroundColor = ConsoleColor.DarkMagenta
-            Console.WriteLine("   ""Pleadge you alleigance to my master and I shall grant you holy guidance and the power to smite those who block your path along this grand adventure."" ")
-            Console.ForegroundColor = ConsoleColor.White
-            Console.WriteLine(bar)
-            For x = 0 To 5
-                Console.WriteLine()
-            Next
-            Console.WriteLine("                                                .                                                            ,")
-            Console.WriteLine("                                                |`.                                                        ,'|")
-            Console.WriteLine("                                                \_`-._                                                  _,-'_/")
-            Console.WriteLine("                                               ./ \-._`-._                                          _,-'_,-/ \,")
-            Console.WriteLine("                                               \._/._ `._>`-.__                                __,-'<_,' _,\_,/")
-            Console.WriteLine("                                               /_ \_.`-._\_-._ `--__                      __--' _,-_/_,-',_/ _\")
-            Console.WriteLine("                                                /._`\_./ _`_./`.-._ `-.                ,-' _,-,'\,_'_ \,_/'_,\")
-            Console.WriteLine("                                                 \._`/ _/ _`_./  _/`\_ `.            ,' _/'\_  \,_'_ \_ \'_,/")
-            Console.WriteLine("                                                  /._`/ _/ _`_./` _/ `\_ `\_      _/' _/' \_ '\,_'_ \_ \'_,\")
-            Console.WriteLine("                                                   \._`/ _/ _`_./` __/  >.  `-.,-'  ,<  \__ '\,_'_ \_ \'_,/")
-            Console.WriteLine("                                                     /_`/._/._`_./` __.`.-\_.-`'-._/-,',__ '\,_'_,\_,\'_\")
-            Console.WriteLine("                                                           `\._`_./`\._/_/'        `\_\_,/'\,_'_,/'")
-            For x = 0 To 9
-                Console.WriteLine()
-            Next
-            Console.WriteLine(bar)
-            Console.WriteLine(" Health " & health & "/100 Press y or n to accept or decline the Angels offer: ")
-            Console.WriteLine(bar)
-            Console.WriteLine()
-            choice = Console.ReadLine
-        Else
-            Console.Clear()
-            Console.WriteLine(bar)
-            Console.ForegroundColor = ConsoleColor.DarkMagenta
-            Console.WriteLine("  Once you've walked far enough into the brambles, a bright light appears along the path and as it dissapates, an imp appears floating in the air.")
-            Console.ForegroundColor = ConsoleColor.Red
-            Console.WriteLine()
-            Console.WriteLine("                                                                          The Daemon")
-            Console.WriteLine()
-            Console.ForegroundColor = ConsoleColor.DarkMagenta
-            Console.WriteLine("  ""Pleadge you alleigance to my master and I shall grant you profane guidance and the power to smite those who block your path along this grand adventure."" ")
-            Console.ForegroundColor = ConsoleColor.White
-            Console.WriteLine(bar)
-            For x = 0 To 5
-                Console.WriteLine()
-            Next
-            Console.WriteLine("                                                                              ,-.")
-            Console.WriteLine("                                                         ___,---.__          /'|`\          __,---,___")
-            Console.WriteLine("                                                      ,-'    \`    `-.____,-'  |  `-.____,-'    //    `-.")
-            Console.WriteLine("                                                    ,'        |           ~'\     /`~           |        `.")
-            Console.WriteLine("                                                   /      ___//              `. ,'          ,  , \___      \")
-            Console.WriteLine("                                                  |    ,-'   `-.__   _         |        ,    __,-'   `-.    |")
-            Console.WriteLine("                                                  |   /          /\_  `   .    |    ,      _/\          \   |")
-            Console.WriteLine("                                                  \  |           \ \`-.___ \   |   / ___,-'/ /           |  /")
-            Console.Write("                                                   \  \           | `._   `\\  |  //' ")
-            Console.ForegroundColor = ConsoleColor.Blue
-            Console.Write(".")
-            Console.ForegroundColor = ConsoleColor.White
-            Console.WriteLine(" _,' |           /  /")
-            Console.WriteLine("                                                    `-.\         /'  _ `---'' , . ``---' _  `\         /,-'")
-            Console.WriteLine("                                                       ``       /     \    ,='/ \`=.    /     \       ''")
-            Console.WriteLine("                                                               |__   /|\_,--.,-.--,--._/|\   __|")
-            Console.WriteLine("                                                               /  `./  \\`\ |  |  | /,//' \,'  \")
-            Console.WriteLine("                                                              /   /     ||--+--|--+-/-|     \   \")
-            Console.WriteLine("                                                             |   |     /'\_\_\ | /_/_/`\     |   |")
-            Console.WriteLine("                                                              \   \__, \_     `~'     _/ .__/   /")
-            Console.WriteLine("                                                               `-._,-'   `-._______,-'   `-._,-'")
-            For x = 0 To 5
-                Console.WriteLine()
-            Next
-
-            Console.WriteLine(bar)
-            Console.WriteLine(" Health " & health & "/100 Press y or n to accept or decline the Daemons offer: ")
-            Console.WriteLine(bar)
-            Console.WriteLine()
-            choice = Console.ReadLine
         End If
 
+        inp()
     End Sub
 
 End Module
