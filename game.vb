@@ -7,7 +7,7 @@ Imports System.Reflection.Metadata.Ecma335
 
 '#############################TO DO LIST#############################
 '
-'implament the commands function and get it working so you can move around with if statements checking if a move is possible and then changing co-ordinates if so
+'
 '
 '
 
@@ -16,6 +16,7 @@ Structure location
     Dim Description As String
     Dim North, East, South, West As Boolean
     Dim items As String
+    Dim i_num As Integer
     Dim Npcs As String
 End Structure
 
@@ -37,6 +38,7 @@ End Structure
 
 Module game
 
+
     Function bag() As String
         Dim p As Integer
         p = 1
@@ -54,6 +56,7 @@ Module game
             End If
 
         Next
+
         Console.WriteLine()
         Console.WriteLine("Choose one with a number or exit")
         Console.Write("> ")
@@ -172,6 +175,7 @@ Module game
 
     Function commands(command As String) As String
         command = command.ToLower
+        Dim y As Integer
         If command.Contains("north") Or command.Contains("up") Then
             If Map(playerx, playery).North = True Then
                 playery = playery - 1
@@ -240,12 +244,29 @@ Module game
 
         ElseIf command.Contains("kill") Or command.Contains("attack") Then
 
+        ElseIf command.Contains("grab") Or command.contains("get") Then
+            If Map(playerx, playery).items.ToLower.Contains(command) = True Then
+                For x = 0 To 7
+
+                    If command.Contains(inv(x).item_name.ToLower) Then
+                        inv(x).exists = True
+                        Console.WriteLine("You picked up the " & inv(x).item_name & " and added it to your backpack")
+
+                    End If
+                Next
+            ElseIf Map(playerx, playery).items.ToLower.Contains(command) = False Then
+
+                Console.WriteLine("That item doesn't exist here")
+                inp()
+            End If
+
         ElseIf command.Contains("quit") Then
             Console.WriteLine("are you sure that you want to quit the game y/n")
-            If Console.ReadLine.ToLower.Contains("y") Then
+            If Console.ReadLine.ToLower.Contains("y") Or Console.ReadLine.ToLower.Contains("ok") Then
                 End
             Else
                 Console.WriteLine("ok")
+                Console.Clear()
                 inp()
             End If
             'ElseIf command.Contains("help") Then
@@ -267,8 +288,11 @@ Module game
             Console.Write("#")
         Next
         Console.WriteLine()
-        Console.WriteLine("Description: " & Map(a, b).Description)
         If Map(a, b).Description.Length > 1 Then
+            Console.WriteLine("Description: " & Map(a, b).Description)
+        End If
+
+        If Map(a, b).items.Length > 1 Then
             Console.WriteLine("The items in " & Map(a, b).Name & " are as follows: " & Map(a, b).items)
         End If
 
@@ -291,7 +315,10 @@ Module game
 
 
     Sub Main()
-
+        Dim a As String
+        Console.Title() = "Rpg 5 hrs in Project"
+        Console.WindowHeight = 30
+        Console.WindowWidth = 156
         title_screen()
 
     End Sub
@@ -309,6 +336,32 @@ Module game
         Console.WriteLine("select what class you want to play")
         Console.WriteLine()
         Console.Write("> ")
+        a = Console.ReadLine()
+        a = a.ToLower
+        If a.Contains("1") Or a.Contains("warrior") Then
+            name.hp = 100
+            name.mp = 0
+            name.pclass = "warrior"
+            Console.Clear()
+        ElseIf a.Contains("2") Or a.Contains("mage") Then
+            name.hp = 60
+            name.mp = 40
+            name.pclass = "mage"
+
+            Console.Clear()
+        ElseIf a.Contains("3") Or a.Contains("rogue") Then
+            name.hp = 80
+            name.mp = 20
+            name.pclass = "rogue"
+
+            Console.Clear()
+        Else
+            Console.WriteLine("Your selection was invalid, automatically picking warrior for you.")
+            name.hp = 100
+            name.mp = 0
+            name.pclass = "warrior"
+            Console.Clear()
+        End If
 
         playerx = 0
         playery = 1
@@ -322,34 +375,34 @@ Module game
         Map(0, 0).items = "james"
 
         Map(0, 1).Name = "James's front garden"
-        Map(0, 1).Description = "you're stood south of the door to the house and north of the path to the village centre. rock is on your left and James's wall is on your right"
+        Map(0, 1).Description = "You're stood south of the door to the house and north of the path to the village centre" & vbCrLf & "To your left is rock and a wall to the house is on your right"
         Map(0, 1).North = True
         Map(0, 1).East = False
         Map(0, 1).South = True
         Map(0, 1).West = False
-        Map(0, 1).items = ""
+        Map(0, 1).items = "Identification Card"
 
-        Map(0, 2).Name = ""
-        Map(0, 2).Description = ""
+        Map(0, 2).Name = "Pathway"
+        Map(0, 2).Description = "stretches downawards"
         Map(0, 2).North = True
         Map(0, 2).East = True
         Map(0, 2).South = True
         Map(0, 2).West = False
         Map(0, 2).items = ""
 
-        Map(0, 3).Name = ""
-        Map(0, 3).Description = ""
+        Map(0, 3).Name = "Pathway"
+        Map(0, 3).Description = "Leads down to a nearby sign"
         Map(0, 3).North = True
         Map(0, 3).East = True
         Map(0, 3).South = True
         Map(0, 3).West = False
         Map(0, 3).items = ""
 
-        Map(0, 4).Name = ""
-        Map(0, 4).Description = ""
+        Map(0, 4).Name = "Crossroad"
+        Map(0, 4).Description = "Sign reads " & vbCrLf & "upwards towards james's house" & vbCrLf & "right to village centre"
         Map(0, 4).North = True
         Map(0, 4).East = True
-        Map(0, 4).South = True
+        Map(0, 4).South = False
         Map(0, 4).West = False
         Map(0, 4).items = ""
 
@@ -1301,34 +1354,40 @@ Module game
         Map(10, 10).West = True
         Map(10, 10).items = ""
 
-        inv(0).item_name = "Empty slot 1"
-        inv(0).item_desc = "this is an item"
+        inv(0).item_name = "Identification Card"
+        inv(0).item_desc = "It Reads: " & vbCrLf & "Name: " & name.Pname & vbCrLf & "Age: 27" & vbCrLf & "Bodily status: Dead" & vbCrLf & "Occupation: Unemployed " & vbCrLf & "Previous occupations: " & name.pclass
         inv(0).effect = ""
-        inv(0).exists = True
+        inv(0).exists = False
         inv(0).item_number = 0
+
+
 
         inv(1).item_name = "War axe"
         inv(1).item_desc = "A large, dulled, silver headed axe with a smooth leather wrapped wooden handle"
         inv(1).effect = "standard damage with slashing damage effect"
         inv(1).exists = False
+        inv(1).item_number = 1
 
 
         inv(2).item_name = "Mage staff"
         inv(2).item_desc = "A long, rough, tree branch like staff which bearly manages to focus the mystical energy within you."
         inv(2).effect = "tbt"
         inv(2).exists = False
+        inv(2).item_number = 2
 
 
         inv(3).item_name = "worn blades"
         inv(3).item_desc = "two short blades, slightly dulled but still usable"
         inv(3).effect = "slashing damage"
         inv(3).exists = False
+        inv(3).item_number = 3
 
 
         inv(4).item_name = "Old short bow"
         inv(4).item_desc = "An ancient short bow that does minimal damage due to how frail it is"
         inv(4).effect = "peircing damage"
         inv(4).exists = False
+        inv(4).item_number = 4
 
 
         inv(5).item_name = ""
@@ -1348,39 +1407,17 @@ Module game
         inv(7).effect = ""
         inv(7).exists = False
 
-
-        a = Console.ReadLine()
-        a = a.ToLower
-        If a.Contains("1") Or a.Contains("warrior") Then
-            name.hp = 100
-            name.mp = 0
-            name.pclass = "warrior"
-
+        If name.pclass = "warrior" Then
             inv(1).exists = True
-            Console.Clear()
-        ElseIf a.Contains("2") Or a.Contains("mage") Then
-            name.hp = 60
-            name.mp = 40
-            name.pclass = "mage"
+
+        ElseIf name.pclass = "mage" Then
             inv(2).exists = True
             inv(2).item_number = 2
-            Console.Clear()
-        ElseIf a.Contains("3") Or a.Contains("rogue") Then
-            name.hp = 80
-            name.mp = 20
-            name.pclass = "rogue"
+        ElseIf name.pclass = "rogue" Then
             inv(3).exists = True
             inv(4).exists = True
             inv(3).item_number = 2
             inv(4).item_number = 3
-            Console.Clear()
-        Else
-            Console.WriteLine("Your selection was invalid, automatically picking warrior for you.")
-            name.hp = 100
-            name.mp = 0
-            name.pclass = "warrior"
-            inv(1).exists = True
-            Console.Clear()
         End If
 
         inp()
