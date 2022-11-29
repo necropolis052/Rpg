@@ -38,6 +38,41 @@ End Structure
 
 Module game
 
+Function save() As String
+
+        Dim Path As String = "U:\computer science\save.txt"
+
+        Dim dlol As String
+        If dlol = "lol" Then
+            File.Delete("U:\computer science\save.txt")
+        End If
+        dlol = "lol"
+        FileOpen(1, Path, OpenMode.Output)
+        PrintLine(1, dlol)
+        For x = 0 To 7
+            PrintLine(1, CStr(inv(x).exists))
+        Next
+        PrintLine(1, name.pclass)
+
+
+        FileClose(1)
+        'read()
+
+    End Function
+    Function read() As String
+        Dim Path As String = "U:\computer science\save.txt"
+        Dim y As Boolean
+        FileOpen(1, Path, OpenMode.Input)
+        For x = 0 To 7
+            y = LineInput(CBool(inv(x).exists))
+            If inv(x).exists = y Then
+                inv(x).exists = True
+            End If
+        Next
+
+
+        FileClose(1)
+    End Function
 
     Function bag() As String
         Dim p As Integer
