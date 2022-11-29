@@ -4,6 +4,7 @@ Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography.X509Certificates
 Imports System.Math
 Imports System.Reflection.Metadata.Ecma335
+Imports System.IO
 
 '#############################TO DO LIST#############################
 '
@@ -38,13 +39,13 @@ End Structure
 
 Module game
 
-Function save() As String
+    Function save() As String
 
-        Dim Path As String = "U:\computer science\save.txt"
+        Dim Path As String = "U:\vb\save.txt"
 
         Dim dlol As String
         If dlol = "lol" Then
-            File.Delete("U:\computer science\save.txt")
+            File.Delete("U:\vb\save.txt")
         End If
         dlol = "lol"
         FileOpen(1, Path, OpenMode.Output)
@@ -60,7 +61,7 @@ Function save() As String
 
     End Function
     Function read() As String
-        Dim Path As String = "U:\computer science\save.txt"
+        Dim Path As String = "U:\vb\save.txt"
         Dim y As Boolean
         FileOpen(1, Path, OpenMode.Input)
         For x = 0 To 7
@@ -160,6 +161,8 @@ Function save() As String
             End
         ElseIf opt.ToLower.Contains("help") Then
             help_menu()
+        ElseIf opt.ToLower.Contains("save") Then
+            save()
         End If
     End Function
 
