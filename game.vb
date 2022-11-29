@@ -244,17 +244,22 @@ Module game
 
         ElseIf command.Contains("kill") Or command.Contains("attack") Then
 
-        ElseIf command.Contains("grab") Or command.contains("get") Then
-            If Map(playerx, playery).items.ToLower.Contains(command) = True Then
+        ElseIf command.Contains("grab") Or command.Contains("get") Then
+            If command.Contains(Map(playerx, playery).items.ToLower) Then
                 For x = 0 To 7
 
                     If command.Contains(inv(x).item_name.ToLower) Then
-                        inv(x).exists = True
-                        Console.WriteLine("You picked up the " & inv(x).item_name & " and added it to your backpack")
+                        If inv(x).exists = False Then
+                            inv(x).exists = True
+                            Console.WriteLine("You picked up the " & inv(x).item_name & " and added it to your backpack")
+                        ElseIf inv(x).exists = True Then
+                            Console.WriteLine("That item doesn't exist here or it's in your backpack")
+                        End If
 
+                        inp()
                     End If
                 Next
-            ElseIf Map(playerx, playery).items.ToLower.Contains(command) = False Then
+            ElseIf command.Contains(Map(playerx, playery).items.ToLower) = False Then
 
                 Console.WriteLine("That item doesn't exist here")
                 inp()
@@ -293,7 +298,15 @@ Module game
         End If
 
         If Map(a, b).items.Length > 1 Then
-            Console.WriteLine("The items in " & Map(a, b).Name & " are as follows: " & Map(a, b).items)
+            For x = 0 To 7
+                If Map(playerx, playery).items = inv(x).item_name Then
+                    If inv(x).exists = False Then
+                        Console.WriteLine("The items in " & Map(a, b).Name & " are as follows: " & Map(a, b).items)
+                    End If
+
+                End If
+            Next
+
         End If
 
 
@@ -380,7 +393,7 @@ Module game
         Map(0, 1).East = False
         Map(0, 1).South = True
         Map(0, 1).West = False
-        Map(0, 1).items = "Identification Card"
+        Map(0, 1).items = "ID"
 
         Map(0, 2).Name = "Pathway"
         Map(0, 2).Description = "stretches downawards"
@@ -1354,8 +1367,8 @@ Module game
         Map(10, 10).West = True
         Map(10, 10).items = ""
 
-        inv(0).item_name = "Identification Card"
-        inv(0).item_desc = "It Reads: " & vbCrLf & "Name: " & name.Pname & vbCrLf & "Age: 27" & vbCrLf & "Bodily status: Dead" & vbCrLf & "Occupation: Unemployed " & vbCrLf & "Previous occupations: " & name.pclass
+        inv(0).item_name = "ID"
+        inv(0).item_desc = vbCrLf & "It Reads: " & vbCrLf & "Name: " & name.Pname & vbCrLf & "Age: 27" & vbCrLf & "Bodily status: Dead" & vbCrLf & "Occupation: Unemployed " & vbCrLf & "Previous occupations: " & name.pclass
         inv(0).effect = ""
         inv(0).exists = False
         inv(0).item_number = 0
@@ -1377,7 +1390,7 @@ Module game
 
 
         inv(3).item_name = "worn blades"
-        inv(3).item_desc = "two short blades, slightly dulled but still usable"
+        inv(3).item_desc = "two short blades, slightly dulled but still mininbst"
         inv(3).effect = "slashing damage"
         inv(3).exists = False
         inv(3).item_number = 3
