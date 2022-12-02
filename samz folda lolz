@@ -1,18 +1,27 @@
 Function save() As String
 
-        Dim Path As String = "U:\computer science\save.txt"
+        Dim Path As String = "U:\computer science\ELON GATED.txt"
 
         Dim dlol As String
+        Dim dElon As String
+        Dim dGate As String
+        Dim dDate As String
         If dlol = "lol" Then
-            File.Delete("U:\computer science\save.txt")
+            File.Delete("U:\computer science\ELON GATED.txt")
         End If
         dlol = "lol"
+        dElon = "ELON"
+        dGate = "WAS MADE LONGER"
+        dDate = "© James Oxley 2022"
         FileOpen(1, Path, OpenMode.Output)
         PrintLine(1, dlol)
+        PrintLine(1, dElon, " ", dGate)
+        PrintLine(1, "")
         For x = 0 To 7
             PrintLine(1, CStr(inv(x).exists))
         Next
         PrintLine(1, name.pclass)
+        PrintLine(1, dDate)
 
 
         FileClose(1)
@@ -20,12 +29,16 @@ Function save() As String
 
     End Function
     Function read() As String
-        Dim Path As String = "U:\computer science\save.txt"
+
+
+        Dim Path As String = "U:\computer science\ELON GATED.txt"
         Dim y As Boolean
+
         FileOpen(1, Path, OpenMode.Input)
+
         For x = 0 To 7
             y = LineInput(CBool(inv(x).exists))
-            If inv(x).exists = y Then
+            If y = True Then
                 inv(x).exists = True
             End If
         Next
@@ -33,3 +46,4 @@ Function save() As String
 
         FileClose(1)
     End Function
+
