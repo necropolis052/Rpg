@@ -38,7 +38,7 @@ Structure inventory
 End Structure
 
 Module game
-
+    Dim ended As Boolean = False
 
 
 
@@ -119,13 +119,19 @@ Module game
     End Function
 
     Function title_screen_options(x As String) As String
-        Dim a As String = "play"
-        Dim b As String = "help"
-        Dim c As String = "quit"
         Dim opt As String
         opt = x
         If opt.ToLower.Contains("play") Then
-            start()
+            Console.Clear()
+            read()
+        ElseIf opt.ToLower.Contains("new game") Then
+            Try
+                File.Delete("U:\computer science\ELON GATED.txt")
+                new_game()
+            Catch ex As Exception
+                new_game()
+            End Try
+
         ElseIf opt.ToLower.Contains("quit") Then
 
             End
@@ -154,10 +160,11 @@ Module game
         Console.WriteLine("      `-.__   _,-.   )       _,.-'")
         Console.WriteLine("           `""     G..m-""^m`m'")
         Console.ForegroundColor = ConsoleColor.White
-        Console.WriteLine()
+        Console.WriteLine("                                                                              .::.                  ")
         Console.WriteLine("                                                                           .: Play :.                  ")
-        Console.WriteLine("                                                                           .: Help  :.                  ")
-        Console.WriteLine("                                                                           .: Quit :.                  ")
+        Console.WriteLine("                                                                         .: New Game :.                  ")
+        Console.WriteLine("                                                                           :: Help ::                  ")
+        Console.WriteLine("                                                                          .:: Quit ::.                  ")
         Console.WriteLine(bar)
         Console.WriteLine()
         Console.Write("> ")
@@ -209,8 +216,12 @@ Module game
 
 
         FileClose(1)
-        read()
-        
+
+        If ended = True Then
+            End
+        End If
+        inp()
+
 
     End Function
     Function read() As String
@@ -220,29 +231,36 @@ Module game
         Dim y As String
         Dim p(7) As String
 
+
         'FileOpen(1, Path, OpenMode.Input)
-        p = File.ReadAllLines(Path)
-        For x = 0 To 10
+        Try
+            p = File.ReadAllLines(Path)
+            For x = 0 To 10
 
-            y = CStr(p(x))
-            If y = "True" Then
-                inv(x).exists = True
-            ElseIf y = "False" Then
-                inv(x).exists = False
-            ElseIf x = 8 Then
-                playerx = CInt(y)
-            ElseIf x = 9 Then
-                playery = CInt(y)
-            ElseIf x = 10 Then
-                name.Pname = y
-            End If
+                y = CStr(p(x))
+                If y = "True" Then
+                    inv(x).exists = True
+                ElseIf y = "False" Then
+                    inv(x).exists = False
+                ElseIf x = 8 Then
+                    playerx = CInt(y)
+                ElseIf x = 9 Then
+                    playery = CInt(y)
+                ElseIf x = 10 Then
+                    name.Pname = y
+                End If
 
-            Console.WriteLine(y)
-        Next
+                'Console.WriteLine(y)
+            Next
 
 
-        FileClose(1)
-        inp()
+            FileClose(1)
+            start()
+        Catch ex As Exception
+            start()
+        End Try
+
+
     End Function
     Function commands(command As String) As String
         command = command.ToLower
@@ -339,7 +357,8 @@ Module game
         ElseIf command.Contains("quit") Then
             Console.WriteLine("are you sure that you want to quit the game y/n")
             If Console.ReadLine.ToLower.Contains("y") Or Console.ReadLine.ToLower.Contains("ok") Then
-                End
+                ended = True
+                save()
             Else
                 Console.WriteLine("ok")
                 Console.Clear()
@@ -390,31 +409,7 @@ Module game
 
 
     End Function
-
-    Dim playerx, playery As Integer
-    Dim Map(10, 10) As location
-    Dim bar As String = "+----------------------------------------------------------------------------------------------------------------------------------------------------------+"
-    Dim x As Integer
-    Dim name As self
-    Dim res As String
-
-    Dim inv(7) As inventory
-    Dim inv_num As Integer
-    Dim Inv_action As String
-    Dim item_chosen As Boolean
-    Dim inv_end As Boolean
-
-
-
-    Sub Main()
-        Dim a As String
-        Console.Title() = "Rpg 5 hrs in Project"
-        Console.WindowHeight = 30
-        Console.WindowWidth = 156
-        title_screen()
-
-    End Sub
-    Sub start()
+    Function new_game() As String
         Dim a As String
         Console.Clear()
         Console.WriteLine("what's your name brave adventurer? ")
@@ -457,6 +452,34 @@ Module game
 
         playerx = 0
         playery = 1
+        start()
+    End Function
+
+    Dim playerx, playery As Integer
+    Dim Map(10, 10) As location
+    Dim bar As String = "+----------------------------------------------------------------------------------------------------------------------------------------------------------+"
+    Dim x As Integer
+    Dim name As self
+    Dim res As String
+
+    Dim inv(7) As inventory
+    Dim inv_num As Integer
+    Dim Inv_action As String
+    Dim item_chosen As Boolean
+    Dim inv_end As Boolean
+
+
+
+    Sub Main()
+        Dim a As String
+        Console.Title() = "Rpg 5 hrs in Project"
+        Console.WindowHeight = 30
+        Console.WindowWidth = 156
+        title_screen()
+
+    End Sub
+    Sub start()
+
 
         Map(0, 0).Name = "Living room"
         Map(0, 0).Description = ""
@@ -1511,7 +1534,7 @@ Module game
             inv(3).item_number = 2
             inv(4).item_number = 3
         End If
-        save()
+        inp()
 
     End Sub
 
