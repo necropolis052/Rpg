@@ -132,7 +132,7 @@ Module game
 
         ElseIf opt.ToLower.Contains("help") Then
             help_menu()
-        
+
         End If
     End Function
 
@@ -209,8 +209,8 @@ Module game
 
 
         FileClose(1)
-        'read()
-        inp()
+        read()
+        
 
     End Function
     Function read() As String
@@ -1511,7 +1511,7 @@ Module game
             inv(3).item_number = 2
             inv(4).item_number = 3
         End If
-        read()
+        save()
 
     End Sub
 
