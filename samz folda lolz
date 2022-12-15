@@ -15,6 +15,7 @@ Imports System.IO
 Structure location
     Dim Name As String
     Dim Description As String
+    Dim direction As String 'new----------------------------------------------------------------
     Dim North, East, South, West As Boolean
     Dim items As String
     Dim i_num As Integer
@@ -381,7 +382,7 @@ Module game
 
 
     Function print_location(a As Integer, b As Integer) As String
-
+        Console.ForegroundColor = ConsoleColor.Yellow
         For x = 0 To (Map(a, b).Name.Length + 3)
             Console.Write("#")
         Next
@@ -390,9 +391,15 @@ Module game
         For x = 0 To (Map(a, b).Name.Length + 3)
             Console.Write("#")
         Next
+        Console.ForegroundColor = ConsoleColor.White
         Console.WriteLine()
         If Map(a, b).Description.Length > 1 Then
-            Console.WriteLine("Description: " & Map(a, b).Description)
+            Console.ForegroundColor = ConsoleColor.Blue
+            Console.WriteLine("Description: " & Map(a, b).Description) 'new----------------------------
+            Console.ForegroundColor = ConsoleColor.Green
+            Console.WriteLine("Directions: " & Map(a, b).direction)
+            Console.ForegroundColor = ConsoleColor.White
+
         End If
 
         If Map(a, b).items.Length > 1 Then
@@ -483,14 +490,16 @@ Module game
 
         Map(0, 0).Name = "Living room"
         Map(0, 0).Description = ""
+        Map(0, 1).direction = " East, South." 'new and needs to be replicated for every tile---------------------------------------------
         Map(0, 0).North = False
         Map(0, 0).East = True
         Map(0, 0).South = True
         Map(0, 0).West = False
-        Map(0, 0).items = "james"
+        Map(0, 0).items = "james lol"
 
         Map(0, 1).Name = "James's front garden"
         Map(0, 1).Description = "You're stood south of the door to the house and north of the path to the village centre" & vbCrLf & "To your left is rock and a wall to the house is on your right"
+        Map(0, 1).direction = "Directions: North, South."
         Map(0, 1).North = True
         Map(0, 1).East = False
         Map(0, 1).South = True
@@ -499,6 +508,7 @@ Module game
 
         Map(0, 2).Name = "Pathway"
         Map(0, 2).Description = "stretches downawards"
+        Map(0, 1).direction = "Directions: North, East, South."
         Map(0, 2).North = True
         Map(0, 2).East = True
         Map(0, 2).South = True
@@ -507,6 +517,7 @@ Module game
 
         Map(0, 3).Name = "Pathway"
         Map(0, 3).Description = "Leads down to a nearby sign"
+        Map(0, 1).direction = "North, East, South."
         Map(0, 3).North = True
         Map(0, 3).East = True
         Map(0, 3).South = True
@@ -515,11 +526,12 @@ Module game
 
         Map(0, 4).Name = "Crossroad"
         Map(0, 4).Description = "Sign reads " & vbCrLf & "upwards towards james's house" & vbCrLf & "right to village centre"
+        Map(0, 1).direction = "North, East."
         Map(0, 4).North = True
         Map(0, 4).East = True
         Map(0, 4).South = False
         Map(0, 4).West = False
-        Map(0, 4).items = ""
+        Map(0, 4).items = "Rusty spoon"
 
         Map(0, 5).Name = ""
         Map(0, 5).Description = ""
@@ -1539,3 +1551,4 @@ Module game
     End Sub
 
 End Module
+
