@@ -1,3 +1,8 @@
+'#############################TO DO LIST#############################
+'
+'Implament key presses and a new bottom bar ui to select actions
+'
+'
 Imports System
 Imports System.ComponentModel.Design
 Imports System.Runtime.InteropServices
@@ -5,16 +10,12 @@ Imports System.Security.Cryptography.X509Certificates
 Imports System.Math
 Imports System.Reflection.Metadata.Ecma335
 Imports System.IO
+Imports rpg.Functions
 
-'#############################TO DO LIST#############################
-'
-'
-'
-'
-
-Structure location
+Structure Location
     Dim Name As String
     Dim Description As String
+    Dim direction As String 'new----------------------------------------------------------------
     Dim North, East, South, West As Boolean
     Dim items As String
     Dim i_num As Integer
@@ -29,7 +30,7 @@ Structure self
     Dim status_effects() As String
 End Structure
 
-Structure inventory
+Structure Inventory
     Dim item_number As Integer
     Dim item_name As String
     Dim item_desc As String
@@ -38,138 +39,38 @@ Structure inventory
 End Structure
 
 Module game
-
-    Function save() As String
-
-        Dim Path As String = "U:\vb\save.txt"
-
-        Dim dlol As String
-        If dlol = "lol" Then
-            File.Delete("U:\vb\save.txt")
-        End If
-        dlol = "lol"
-        FileOpen(1, Path, OpenMode.Output)
-        PrintLine(1, dlol)
-        For x = 0 To 7
-            PrintLine(1, CStr(inv(x).exists))
-        Next
-        PrintLine(1, name.pclass)
+    Dim Bar As String = "+----------------------------------------------------------------------------------------------------------------------------------------------------------+"
+    Public ended As Boolean = False
+    Public playerx, playery As Integer
+    Dim x As Integer
 
 
-        FileClose(1)
-        'read()
-
-    End Function
-    Function read() As String
-        Dim Path As String = "U:\vb\save.txt"
-        Dim y As Boolean
-        FileOpen(1, Path, OpenMode.Input)
-        For x = 0 To 7
-            y = LineInput(CBool(inv(x).exists))
-            If inv(x).exists = y Then
-                inv(x).exists = True
-            End If
-        Next
+    Public Map(10, 10) As Location
+    Public Inv(7) As Inventory
+    Dim Name As self
 
 
-        FileClose(1)
-    End Function
 
-    Function bag() As String
-        Dim p As Integer
-        p = 1
-
-        Dim a As String
-        Dim b As Integer
-        Console.Clear()
-        Console.WriteLine("##INVENTORY_LIST##")
-        Console.WriteLine()
-        For x = 0 To 7
-            If inv(x).exists = True Then
-                Console.Write(p & ". ")
-                Console.WriteLine(inv(x).item_name)
-                p = p + 1
-            End If
-
-        Next
-
-        Console.WriteLine()
-        Console.WriteLine("Choose one with a number or exit")
-        Console.Write("> ")
-        a = Console.ReadLine()
-        a = a.ToLower
-
-        If a = "0" Or "1" Or "2" Or "3" Or "4" Or "5" Or "6" Or "7" Then
-            If name.pclass = "warrior" Then
-                b = CInt(a)
-                Console.WriteLine(inv(b - 1).item_desc)
-                Console.WriteLine()
-                Console.WriteLine()
-            ElseIf name.pclass = "mage" Then
-                If b > 1 Then
-                    b = CInt(a)
-                    Console.WriteLine(inv(b).item_desc)
-                    Console.WriteLine()
-                    Console.WriteLine()
-                Else
-                    Console.WriteLine(inv(0).item_desc)
-                    Console.WriteLine()
-                    Console.WriteLine()
-                End If
-            ElseIf name.pclass = "rogue" Then
-                b = CInt(a)
-                If b > 1 Then
-                    Console.WriteLine(inv(b + 1).item_desc)
-                    Console.WriteLine()
-                    Console.WriteLine()
-                Else
-                    Console.WriteLine(inv(0).item_desc)
-                    Console.WriteLine()
-                    Console.WriteLine()
-                End If
-            End If
-        End If
-        inp()
-    End Function
-
-    Function help_menu() As String
+    Sub Help_menu()
         Dim x As String
         Console.Clear()
-        Console.WriteLine(bar)
+        Console.WriteLine(Bar)
         Console.WriteLine("                                                  Type a command such as 'move' then 'left' to nagivate the map .")
         Console.WriteLine("                                               Inputs such as 'look' or 'examine' will let you interact with rooms.")
         Console.WriteLine("                                                           Please ensure to type in lowercase for ease.")
-        Console.WriteLine(bar)
+        Console.WriteLine(Bar)
         Console.WriteLine("                                                               Please select an option to continue.     ")
-        Console.WriteLine(bar)
+        Console.WriteLine(Bar)
         Console.WriteLine("                                                                            .: Play :.                  ")
         Console.WriteLine("                                                                            .: Help :.                  ")
         Console.WriteLine("                                                                            .: Quit :.                  ")
         x = Console.ReadLine()
         title_screen_options(x)
-    End Function
-
-    Function title_screen_options(x As String) As String
-        Dim a As String = "play"
-        Dim b As String = "help"
-        Dim c As String = "quit"
-        Dim opt As String
-        opt = x
-        If opt.ToLower.Contains("play") Then
-            start()
-        ElseIf opt.ToLower.Contains("quit") Then
-            End
-        ElseIf opt.ToLower.Contains("help") Then
-            help_menu()
-        ElseIf opt.ToLower.Contains("save") Then
-            save()
-        End If
-    End Function
-
-    Function title_screen() As String
+    End Sub
+    Sub Title_screen()
         Dim y As String
         Console.WriteLine()
-        Console.WriteLine(bar)
+        Console.WriteLine(Bar)
         For x = 0 To 12
             Console.WriteLine()
         Next
@@ -184,19 +85,78 @@ Module game
         Console.WriteLine("      `-.__   _,-.   )       _,.-'")
         Console.WriteLine("           `""     G..m-""^m`m'")
         Console.ForegroundColor = ConsoleColor.White
-        Console.WriteLine()
+        Console.WriteLine("                                                                              .::.                  ")
         Console.WriteLine("                                                                           .: Play :.                  ")
-        Console.WriteLine("                                                                           .: Help  :.                  ")
-        Console.WriteLine("                                                                           .: Quit :.                  ")
-        Console.WriteLine(bar)
+        Console.WriteLine("                                                                         .: New Game :.                  ")
+        Console.WriteLine("                                                                           :: Help ::                  ")
+        Console.WriteLine("                                                                          .:: Quit ::.                  ")
+        Console.WriteLine(Bar)
         Console.WriteLine()
         Console.Write("> ")
         y = Console.ReadLine()
         title_screen_options(y)
-    End Function
+    End Sub
 
+    'display the inventory screen
+    Sub Bag()
+        Dim p As Integer
+        p = 1
 
-    Function inp() As String
+        Dim a As String
+        Dim b As Integer
+        Console.Clear()
+        Console.WriteLine("##INVENTORY_LIST##")
+        Console.WriteLine()
+        For x = 0 To 7
+            If Inv(x).exists = True Then
+                Console.Write(p & ". ")
+                Console.WriteLine(Inv(x).item_name)
+                p = p + 1
+            End If
+
+        Next
+
+        Console.WriteLine()
+        Console.WriteLine("Choose one with a number or exit")
+        Console.Write("> ")
+        a = Console.ReadLine()
+        a = a.ToLower
+
+        If a = "0" Or "1" Or "2" Or "3" Or "4" Or "5" Or "6" Or "7" Then
+            If Name.pclass = "warrior" Then
+                b = CInt(a)
+                Console.WriteLine(Inv(b - 1).item_desc)
+                Console.WriteLine()
+                Console.WriteLine()
+            ElseIf Name.pclass = "mage" Then
+                If b > 1 Then
+                    b = CInt(a)
+                    Console.WriteLine(Inv(b).item_desc)
+                    Console.WriteLine()
+                    Console.WriteLine()
+                Else
+                    Console.WriteLine(Inv(0).item_desc)
+                    Console.WriteLine()
+                    Console.WriteLine()
+                End If
+            ElseIf Name.pclass = "rogue" Then
+                b = CInt(a)
+                If b > 1 Then
+                    Console.WriteLine(Inv(b + 1).item_desc)
+                    Console.WriteLine()
+                    Console.WriteLine()
+                Else
+                    Console.WriteLine(Inv(0).item_desc)
+                    Console.WriteLine()
+                    Console.WriteLine()
+                End If
+            End If
+        End If
+        Inp()
+    End Sub
+
+    'Print the location and wait for an input 
+    Sub Inp()
         Dim input As String
 
         Console.WriteLine(print_location(playerx, playery))
@@ -205,179 +165,91 @@ Module game
         input = Console.ReadLine()
         Console.WriteLine(commands(input))
         Console.WriteLine()
+    End Sub
+
+    'read wright to save file
+    Sub Save()
+
+        Dim Path As String = "U:\computer science\ELON GATED.txt"
+
+        Dim dlol As String
+        Dim dElon As String
+        Dim dGate As String
+        Dim dDate As String
+
+        File.Delete("U:\computer science\ELON GATED.txt")
+
+        dlol = "lol"
+        'dElon = "ELON"
+        'dGate = "WAS MADE LONGER"
+        'dDate = "© James Oxley 2022"
+        FileOpen(1, Path, OpenMode.Output)
 
 
-
-
-    End Function
-
-    Function commands(command As String) As String
-        command = command.ToLower
-        Dim y As Integer
-        If command.Contains("north") Or command.Contains("up") Then
-            If Map(playerx, playery).North = True Then
-                playery = playery - 1
-                Console.Clear()
-                'loops back to input function to catch another command
-                inp()
-            Else
-                Console.Clear()
-                Console.WriteLine("You find yourself unable to walk in that directon as there's no exits. ")
-                Console.WriteLine()
-                Console.WriteLine("Please try entering your command again")
-                Console.WriteLine()
-
-                inp()
-
-            End If
-        ElseIf command.Contains("east") Or command.Contains("right") Then
-            If Map(playerx, playery).East = True Then
-                playerx = playerx + 1
-                Console.Clear()
-                inp()
-            Else
-                Console.Clear()
-                Console.WriteLine("You find yourself unable to walk in that directon as there's no exits. ")
-                Console.WriteLine()
-                Console.WriteLine("Please try entering your command again")
-                Console.WriteLine()
-
-                inp()
-
-            End If
-
-        ElseIf command.Contains("south") Or command.Contains("down") Then
-            If Map(playerx, playery).South = True Then
-                playery = playery + 1
-                Console.Clear()
-                inp()
-            Else
-                Console.Clear()
-                Console.WriteLine("You find yourself unable to walk in that directon as there's no exits. ")
-                Console.WriteLine()
-                Console.WriteLine("Please try entering your command again")
-                Console.WriteLine()
-
-                inp()
-
-            End If
-        ElseIf command.Contains("west") Or command.Contains("left") Then
-            If Map(playerx, playery).West = True Then
-                playerx = playerx - 1
-                Console.Clear()
-                inp()
-            Else
-                Console.Clear()
-                Console.WriteLine("You find yourself unable to walk in that directon as there's no exits. ")
-                Console.WriteLine()
-                Console.WriteLine("Please try entering your command again")
-                Console.WriteLine()
-
-                inp()
-
-            End If
-        ElseIf command.Contains("inventory") Or command.Contains("inv") Then
-            bag()
-        ElseIf command.Contains("block") Or command.Contains("sheild") Or command.Contains("stop") Then
-
-        ElseIf command.Contains("kill") Or command.Contains("attack") Then
-
-        ElseIf command.Contains("grab") Or command.Contains("get") Then
-            If command.Contains(Map(playerx, playery).items.ToLower) Then
-                For x = 0 To 7
-
-                    If command.Contains(inv(x).item_name.ToLower) Then
-                        If inv(x).exists = False Then
-                            inv(x).exists = True
-                            Console.WriteLine("You picked up the " & inv(x).item_name & " and added it to your backpack")
-                        ElseIf inv(x).exists = True Then
-                            Console.WriteLine("That item doesn't exist here or it's in your backpack")
-                        End If
-
-                        inp()
-                    End If
-                Next
-            ElseIf command.Contains(Map(playerx, playery).items.ToLower) = False Then
-
-                Console.WriteLine("That item doesn't exist here")
-                inp()
-            End If
-
-        ElseIf command.Contains("quit") Then
-            Console.WriteLine("are you sure that you want to quit the game y/n")
-            If Console.ReadLine.ToLower.Contains("y") Or Console.ReadLine.ToLower.Contains("ok") Then
-                End
-            Else
-                Console.WriteLine("ok")
-                Console.Clear()
-                inp()
-            End If
-            'ElseIf command.Contains("help") Then
-            'help_menu()
-            'end if
-        End If
-
-
-    End Function
-
-    Function print_location(a As Integer, b As Integer) As String
-
-        For x = 0 To (Map(a, b).Name.Length + 3)
-            Console.Write("#")
+        For x = 0 To 7
+            PrintLine(1, CStr(Inv(x).exists))
         Next
-        Console.WriteLine()
-        Console.WriteLine("# " & Map(a, b).Name & " #")
-        For x = 0 To (Map(a, b).Name.Length + 3)
-            Console.Write("#")
-        Next
-        Console.WriteLine()
-        If Map(a, b).Description.Length > 1 Then
-            Console.WriteLine("Description: " & Map(a, b).Description)
+        PrintLine(1, CStr(playerx))
+        PrintLine(1, CStr(playery))
+        PrintLine(1, CStr(Name.Pname))
+        'PrintLine(1, name.pclass)
+        'PrintLine(1, dDate)
+
+
+        FileClose(1)
+
+        If ended = True Then
+            End
         End If
+        Inp()
 
-        If Map(a, b).items.Length > 1 Then
-            For x = 0 To 7
-                If Map(playerx, playery).items = inv(x).item_name Then
-                    If inv(x).exists = False Then
-                        Console.WriteLine("The items in " & Map(a, b).Name & " are as follows: " & Map(a, b).items)
-                    End If
-
-                End If
-            Next
-
-        End If
-
-
-    End Function
-
-    Dim playerx, playery As Integer
-    Dim Map(10, 10) As location
-    Dim bar As String = "+----------------------------------------------------------------------------------------------------------------------------------------------------------+"
-    Dim x As Integer
-    Dim name As self
-    Dim res As String
-
-    Dim inv(7) As inventory
-    Dim inv_num As Integer
-    Dim Inv_action As String
-    Dim item_chosen As Boolean
-    Dim inv_end As Boolean
-
-
-
-    Sub Main()
-        Dim a As String
-        Console.Title() = "Rpg 5 hrs in Project"
-        Console.WindowHeight = 30
-        Console.WindowWidth = 156
-        title_screen()
 
     End Sub
-    Sub start()
+    Sub Read()
+
+
+        Dim Path As String = "U:\computer science\ELON GATED.txt"
+        Dim y As String
+        Dim p(7) As String
+
+
+        'FileOpen(1, Path, OpenMode.Input)
+        Try
+            p = File.ReadAllLines(Path)
+            For x = 0 To 10
+
+                y = CStr(p(x))
+                If y = "True" Then
+                    Inv(x).exists = True
+                ElseIf y = "False" Then
+                    Inv(x).exists = False
+                ElseIf x = 8 Then
+                    playerx = CInt(y)
+                ElseIf x = 9 Then
+                    playery = CInt(y)
+                ElseIf x = 10 Then
+                    Name.Pname = y
+                End If
+
+                'Console.WriteLine(y)
+            Next
+
+
+            FileClose(1)
+            start()
+        Catch ex As Exception
+            start()
+        End Try
+
+
+    End Sub
+
+    'Goes through the game starting process with the player
+    Sub New_game()
         Dim a As String
         Console.Clear()
         Console.WriteLine("what's your name brave adventurer? ")
-        name.Pname = Console.ReadLine()
+        Name.Pname = Console.ReadLine()
         Console.Clear()
         Console.WriteLine("####CLASS_SELECTION####")
         Console.WriteLine("1. Warrior")
@@ -390,43 +262,59 @@ Module game
         a = Console.ReadLine()
         a = a.ToLower
         If a.Contains("1") Or a.Contains("warrior") Then
-            name.hp = 100
-            name.mp = 0
-            name.pclass = "warrior"
+            Name.hp = 100
+            Name.mp = 0
+            Name.pclass = "warrior"
             Console.Clear()
         ElseIf a.Contains("2") Or a.Contains("mage") Then
-            name.hp = 60
-            name.mp = 40
-            name.pclass = "mage"
+            Name.hp = 60
+            Name.mp = 40
+            Name.pclass = "mage"
 
             Console.Clear()
         ElseIf a.Contains("3") Or a.Contains("rogue") Then
-            name.hp = 80
-            name.mp = 20
-            name.pclass = "rogue"
+            Name.hp = 80
+            Name.mp = 20
+            Name.pclass = "rogue"
 
             Console.Clear()
         Else
             Console.WriteLine("Your selection was invalid, automatically picking warrior for you.")
-            name.hp = 100
-            name.mp = 0
-            name.pclass = "warrior"
+            Name.hp = 100
+            Name.mp = 0
+            Name.pclass = "warrior"
             Console.Clear()
         End If
 
         playerx = 0
         playery = 1
+        start()
+    End Sub
+
+
+    Sub Main()
+        Dim a As String
+        Console.Title() = "Rpg 5 hrs in Project"
+        Console.WindowHeight = 30
+        Console.WindowWidth = 156
+        Title_screen()
+
+    End Sub
+    Sub start()
+
 
         Map(0, 0).Name = "Living room"
         Map(0, 0).Description = ""
+        Map(0, 1).direction = " East, South." 'new and needs to be replicated for every tile---------------------------------------------
         Map(0, 0).North = False
         Map(0, 0).East = True
         Map(0, 0).South = True
         Map(0, 0).West = False
-        Map(0, 0).items = "james"
+        Map(0, 0).items = "james lol"
 
         Map(0, 1).Name = "James's front garden"
         Map(0, 1).Description = "You're stood south of the door to the house and north of the path to the village centre" & vbCrLf & "To your left is rock and a wall to the house is on your right"
+        Map(0, 1).direction = "Directions: North, South."
         Map(0, 1).North = True
         Map(0, 1).East = False
         Map(0, 1).South = True
@@ -435,6 +323,7 @@ Module game
 
         Map(0, 2).Name = "Pathway"
         Map(0, 2).Description = "stretches downawards"
+        Map(0, 1).direction = "Directions: North, East, South."
         Map(0, 2).North = True
         Map(0, 2).East = True
         Map(0, 2).South = True
@@ -443,6 +332,7 @@ Module game
 
         Map(0, 3).Name = "Pathway"
         Map(0, 3).Description = "Leads down to a nearby sign"
+        Map(0, 1).direction = "North, East, South."
         Map(0, 3).North = True
         Map(0, 3).East = True
         Map(0, 3).South = True
@@ -451,11 +341,12 @@ Module game
 
         Map(0, 4).Name = "Crossroad"
         Map(0, 4).Description = "Sign reads " & vbCrLf & "upwards towards james's house" & vbCrLf & "right to village centre"
+        Map(0, 1).direction = "North, East."
         Map(0, 4).North = True
         Map(0, 4).East = True
         Map(0, 4).South = False
         Map(0, 4).West = False
-        Map(0, 4).items = ""
+        Map(0, 4).items = "Rusty spoon"
 
         Map(0, 5).Name = ""
         Map(0, 5).Description = ""
@@ -1405,73 +1296,73 @@ Module game
         Map(10, 10).West = True
         Map(10, 10).items = ""
 
-        inv(0).item_name = "ID"
-        inv(0).item_desc = vbCrLf & "It Reads: " & vbCrLf & "Name: " & name.Pname & vbCrLf & "Age: 27" & vbCrLf & "Bodily status: Dead" & vbCrLf & "Occupation: Unemployed " & vbCrLf & "Previous occupations: " & name.pclass
-        inv(0).effect = ""
-        inv(0).exists = False
-        inv(0).item_number = 0
+        Inv(0).item_name = "ID"
+        Inv(0).item_desc = vbCrLf & "It Reads: " & vbCrLf & "Name: " & Name.Pname & vbCrLf & "Age: 27" & vbCrLf & "Bodily status: Dead" & vbCrLf & "Occupation: Unemployed " & vbCrLf & "Previous occupations: " & Name.pclass
+        Inv(0).effect = ""
+        Inv(0).exists = False
+        Inv(0).item_number = 0
 
 
 
-        inv(1).item_name = "War axe"
-        inv(1).item_desc = "A large, dulled, silver headed axe with a smooth leather wrapped wooden handle"
-        inv(1).effect = "standard damage with slashing damage effect"
-        inv(1).exists = False
-        inv(1).item_number = 1
+        Inv(1).item_name = "War axe"
+        Inv(1).item_desc = "A large, dulled, silver headed axe with a smooth leather wrapped wooden handle"
+        Inv(1).effect = "standard damage with slashing damage effect"
+        Inv(1).exists = False
+        Inv(1).item_number = 1
 
 
-        inv(2).item_name = "Mage staff"
-        inv(2).item_desc = "A long, rough, tree branch like staff which bearly manages to focus the mystical energy within you."
-        inv(2).effect = "tbt"
-        inv(2).exists = False
-        inv(2).item_number = 2
+        Inv(2).item_name = "Mage staff"
+        Inv(2).item_desc = "A long, rough, tree branch like staff which bearly manages to focus the mystical energy within you."
+        Inv(2).effect = "tbt"
+        Inv(2).exists = False
+        Inv(2).item_number = 2
 
 
-        inv(3).item_name = "worn blades"
-        inv(3).item_desc = "two short blades, slightly dulled but still mininbst"
-        inv(3).effect = "slashing damage"
-        inv(3).exists = False
-        inv(3).item_number = 3
+        Inv(3).item_name = "worn blades"
+        Inv(3).item_desc = "two short blades, slightly dulled but still mininbst"
+        Inv(3).effect = "slashing damage"
+        Inv(3).exists = False
+        Inv(3).item_number = 3
 
 
-        inv(4).item_name = "Old short bow"
-        inv(4).item_desc = "An ancient short bow that does minimal damage due to how frail it is"
-        inv(4).effect = "peircing damage"
-        inv(4).exists = False
-        inv(4).item_number = 4
+        Inv(4).item_name = "Old short bow"
+        Inv(4).item_desc = "An ancient short bow that does minimal damage due to how frail it is"
+        Inv(4).effect = "peircing damage"
+        Inv(4).exists = False
+        Inv(4).item_number = 4
 
 
-        inv(5).item_name = ""
-        inv(5).item_desc = ""
-        inv(5).effect = ""
-        inv(5).exists = False
+        Inv(5).item_name = ""
+        Inv(5).item_desc = ""
+        Inv(5).effect = ""
+        Inv(5).exists = False
 
 
-        inv(6).item_name = ""
-        inv(6).item_desc = ""
-        inv(6).effect = ""
-        inv(6).exists = False
+        Inv(6).item_name = ""
+        Inv(6).item_desc = ""
+        Inv(6).effect = ""
+        Inv(6).exists = False
 
 
-        inv(7).item_name = ""
-        inv(7).item_desc = ""
-        inv(7).effect = ""
-        inv(7).exists = False
+        Inv(7).item_name = ""
+        Inv(7).item_desc = ""
+        Inv(7).effect = ""
+        Inv(7).exists = False
 
-        If name.pclass = "warrior" Then
-            inv(1).exists = True
+        If Name.pclass = "warrior" Then
+            Inv(1).exists = True
 
-        ElseIf name.pclass = "mage" Then
-            inv(2).exists = True
-            inv(2).item_number = 2
-        ElseIf name.pclass = "rogue" Then
-            inv(3).exists = True
-            inv(4).exists = True
-            inv(3).item_number = 2
-            inv(4).item_number = 3
+        ElseIf Name.pclass = "mage" Then
+            Inv(2).exists = True
+            Inv(2).item_number = 2
+        ElseIf Name.pclass = "rogue" Then
+            Inv(3).exists = True
+            Inv(4).exists = True
+            Inv(3).item_number = 2
+            Inv(4).item_number = 3
         End If
-
-        inp()
+        Inp()
     End Sub
 
 End Module
+
