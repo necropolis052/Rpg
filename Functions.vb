@@ -1,4 +1,4 @@
-Imports rpg.game
+Imports Rpg.game
 Imports System.IO
 
 Module Functions
@@ -8,9 +8,10 @@ Module Functions
         If opt.ToLower.Contains("play") Then
             Console.Clear()
             Read()
+            start()
         ElseIf opt.ToLower.Contains("new game") Then
             Try
-                File.Delete("U:\computer science\Save.txt")
+                File.Delete("C:\computer science\Save.txt")
 
                 New_game()
             Catch ex As Exception
@@ -48,17 +49,17 @@ Module Functions
         End If
 
         For y = 0 To 7
-            If Map(a, b).items(y).Length > 1 Then
-                For x = 0 To 7
-                    If Map(playerx, playery).items(x) = Inv(x).item_name Then
-                        If Inv(x).exists = False Then
-                            Console.WriteLine("The items in " & Map(a, b).Name & " are as follows: " & Map(a, b).items(x))
-                        End If
 
-                    End If
-                Next
+            For x = 0 To 7
+                If playerx = Inv(x).X_loc And playery = Inv(y).Y_loc Then
 
-            End If
+                    Console.WriteLine("The items in " & Map(a, b).Name & " are as follows: " & Inv(x).item_name)
+
+
+                End If
+            Next
+
+
         Next
 
 
@@ -137,25 +138,29 @@ Module Functions
 
         ElseIf command.Contains("grab") Or command.Contains("get") Then
             For y = 0 To 7
-                If command.Contains(Map(playerx, playery).items(y).ToLower) Then
-                    For x = 0 To 7
-                        If command.Contains(Inv(x).item_name.ToLower) Then
-                            If Inv(x).exists = False Then
-                                Inv(x).exists = True
-                                Map(playerx, playery).items.Remove(x)
-                                Console.WriteLine("You picked up the " & Inv(x).item_name & " and added it to your backpack")
-                            ElseIf Inv(x).exists = True Then
-                                Console.WriteLine("That item doesn't exist here or it's in your backpack")
-                            End If
+                If command.Contains(Inv(y).item_name.ToLower) And Inv(y).X_loc <> -1 And Inv(y).X_loc <> -2 Then
+                    'For x = 0 To 7
+                    '    If command.Contains(Inv(x).item_name.ToLower) Then
+                    '        If Inv(x).exists = False Then
+                    '            Inv(x).exists = True
+                    '            Map(playerx, playery).items.Remove(x)
+                    '            Console.WriteLine("You picked up the " & Inv(x).item_name & " and added it to your backpack")
+                    '        ElseIf Inv(x).exists = True Then
+                    '            Console.WriteLine("That item doesn't exist here or it's in your backpack")
+                    '
+                    '        End If
+                    '
+                    '        Inp()
+                    '    End If
+                    'Next
+                    If Inv(y).X_loc = playerx And Inv(y).Y_loc = playery Then
+                        'if the item is in the same room as the player then add it to their inventory (position -1)
+                        Inv(y).X_loc = -1
+                        Inv(y).Y_loc = -1
+                    End If
 
-                            Inp()
-                        End If
-                    Next
-                ElseIf command.Contains(Map(playerx, playery).items(y).ToLower) = False Then
-
-                    Console.WriteLine("That item doesn't exist here")
-                    Inp()
                 End If
+                    Inp()
             Next
         ElseIf command.Contains("quit") Then
             Console.WriteLine("are you sure that you want to quit the game y/n")
