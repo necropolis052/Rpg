@@ -5,7 +5,7 @@ Imports System.Security.Cryptography.X509Certificates
 Imports System.Math
 Imports System.Reflection.Metadata.Ecma335
 Imports System.IO
-Imports rpg.Functions
+Imports Rpg.Functions
 
 Structure Location
     Dim Name As String
@@ -48,6 +48,7 @@ Module game
     Dim Bar As String = "+----------------------------------------------------------------------------------------------------------------------------------------------------------+"
     Public ended As Boolean = False
     Public playerx, playery As Integer
+    Dim numofItems As Integer
 
 
 
@@ -109,13 +110,13 @@ Module game
         Dim p As Integer
         p = 1
 
-        Dim a As String
+        Dim chosen_num As String
         Dim b As Integer
         Console.Clear()
         Console.WriteLine("##INVENTORY_LIST##")
         Console.WriteLine()
         For x = 0 To 7
-            If Inv(x).exists = True Then
+            If Inv(x).X_loc = -1 Then
                 Console.Write(p & ". ")
                 Console.WriteLine(Inv(x).item_name)
                 p = p + 1
@@ -126,39 +127,37 @@ Module game
         Console.WriteLine()
         Console.WriteLine("Choose one with a number or exit")
         Console.Write("> ")
-        a = Console.ReadLine()
-        a = a.ToLower
+        chosen_num = Console.ReadLine()
+        chosen_num = chosen_num.ToLower
+        b = CInt(chosen_num)
 
-        If a = "0" Or "1" Or "2" Or "3" Or "4" Or "5" Or "6" Or "7" Then
+        Try
             If Name.pclass = "warrior" Then
-                b = CInt(a)
+
                 Console.WriteLine(Inv(b - 1).item_desc)
                 Console.WriteLine()
                 Console.WriteLine()
             ElseIf Name.pclass = "mage" Then
-                If b > 1 Then
-                    b = CInt(a)
-                    Console.WriteLine(Inv(b).item_desc)
-                    Console.WriteLine()
-                    Console.WriteLine()
-                Else
-                    Console.WriteLine(Inv(0).item_desc)
-                    Console.WriteLine()
-                    Console.WriteLine()
-                End If
+
+
+                Console.WriteLine(Inv(b - 1).item_desc)
+                Console.WriteLine()
+                Console.WriteLine()
+
+
             ElseIf Name.pclass = "rogue" Then
-                b = CInt(a)
-                If b > 1 Then
-                    Console.WriteLine(Inv(b + 1).item_desc)
-                    Console.WriteLine()
-                    Console.WriteLine()
-                Else
-                    Console.WriteLine(Inv(0).item_desc)
-                    Console.WriteLine()
-                    Console.WriteLine()
-                End If
+
+
+                Console.WriteLine(Inv(b - 1).item_desc)
+                Console.WriteLine()
+                Console.WriteLine()
+
             End If
-        End If
+        Catch ex As Exception
+
+        End Try
+
+
         Inp()
     End Sub
 
@@ -177,11 +176,11 @@ Module game
     'read wright to save file
     Sub Save()
 
-        Dim Path As String = "U:\computer science\Save.txt"
+        Dim Path As String = "C:\computer science\Save.txt"
 
         Dim dlol As String
 
-        File.Delete("U:\computer science\Save.txt")
+        File.Delete("C:\computer science\Save.txt")
 
         dlol = "lol"
         'dElon = "ELON"
@@ -189,22 +188,17 @@ Module game
         'dDate = "© James Oxley 2022"
         FileOpen(1, Path, OpenMode.Output)
 
-
-        For x = 0 To 7
-            PrintLine(1, CStr(Inv(x).exists))
-        Next
+        PrintLine(1, CStr(Name.Pname))
+        PrintLine(1, CStr(Name.pclass))
         PrintLine(1, CStr(playerx))
         PrintLine(1, CStr(playery))
-        PrintLine(1, CStr(Name.Pname))
+
         'PrintLine(1, name.pclass)
         'PrintLine(1, dDate)
-        For x = 0 To 10
-            For y = 0 To 10
-                If Items.X_loc <> -1 Then
-                    PrintLine(1, Map(x, y).items(0))
-                End If
-
-            Next
+        For x = 0 To numofItems
+            PrintLine(1, Inv(x).item_name)
+            PrintLine(1, Inv(x).X_loc)
+            PrintLine(1, Inv(x).Y_loc)
         Next
 
 
@@ -213,50 +207,69 @@ Module game
         If ended = True Then
             End
         End If
-        Inp()
+
 
 
     End Sub
     Sub Read()
 
 
-        Dim Path As String = "U:\computer science\Save.txt"
+        Dim Path As String = "C:\computer science\Save.txt"
         Dim y As String
-        Dim p(7) As String
+        Dim p() As String
+        Dim c As Integer = 0
+        Dim slot As Integer = 0
 
 
         'FileOpen(1, Path, OpenMode.Input)
-        Try
-p = File.ReadAllLines(Path)
-            For x = 0 To 10
 
-                y = CStr(p(x))
-                If y = "True" Then
-                    Inv(x).exists = True
-                ElseIf y = "False" Then
-                    Inv(x).exists = False
-                ElseIf x = 8 Then
-                    playerx = CInt(y)
-                ElseIf x = 9 Then
-                    playery = CInt(y)
-                ElseIf x = 10 Then
-                    Name.Pname = y
-                End If
+        p = File.ReadAllLines(Path)
+            Console.WriteLine(p(1))
+        'Read all the data from the file and use it to set variables
 
-                'Console.WriteLine(y)
+
+        y = CStr(p(c))
+        If c = 0 Then
+            Name.Pname = y
+            c = c + 1
+        ElseIf c = 1 Then
+            Name.pclass = y
+            c = c + 1
+        ElseIf c = 2 Then
+            playerx = CInt(p(2))
+            Console.WriteLine(playerx & "x")
+            c = c + 1
+        ElseIf c = 3 Then
+            playery = CInt(p(3))
+
+            Console.WriteLine(playery)
+            c = c + 1
+        ElseIf c >= 4 Then
+
+            For i = 4 To p.Length
+                Inv(slot).item_name = CStr(p(c))
+                Console.WriteLine(Inv(slot).item_name)
+                Inv(slot).X_loc = CInt(p(c + 1))
+                Console.WriteLine(Inv(slot).X_loc)
+                Inv(slot).Y_loc = CInt(p(c + 2))
+                Console.WriteLine(Inv(slot).Y_loc)
+                c = c + 3
+                slot = slot + 1
             Next
-            For i = 0 To 5
-                y = (p(i + 10))
-                Items(i).Name = y
-            Next
+
+        End If
 
 
 
-            FileClose(1)
-            start()
-        Catch ex As Exception
-            start()
-        End Try
+
+
+
+
+
+
+        FileClose(1)
+
+
 
 
 
@@ -313,6 +326,7 @@ p = File.ReadAllLines(Path)
 
         playerx = 0
         playery = 1
+        Save()
         start()
     End Sub
 
@@ -1213,83 +1227,105 @@ p = File.ReadAllLines(Path)
         Map(10, 10).South = False
         Map(10, 10).West = True
 
-        Inv(0).item_name = "ID"
-        Inv(0).item_desc = vbCrLf & "It Reads: " & vbCrLf & "Name: " & Name.Pname & vbCrLf & "Age: 27" & vbCrLf & "Bodily status: Dead" & vbCrLf & "Occupation: Unemployed " & vbCrLf & "Previous occupations: " & Name.pclass
-        Inv(0).effect = ""
-        Inv(1).X_loc = 0
-        Inv(1).Y_loc = 1
-        Inv(0).item_number = 0
 
 
-
-        Inv(1).item_name = "War axe"
-        Inv(1).item_desc = "A large, dulled, silver headed axe with a smooth leather wrapped wooden handle"
-        Inv(1).effect = "standard damage with slashing damage effect"
-        Inv(1).X_loc = -2
-        Inv(1).Y_loc = -2
-        Inv(1).item_number = 1
-
-
-        Inv(2).item_name = "Mage staff"
-        Inv(2).item_desc = "A long, rough, tree branch like staff which bearly manages to focus the mystical energy within you."
-        Inv(2).effect = "tbt"
-        Inv(1).X_loc = -2
-        Inv(1).Y_loc = -2
-        Inv(2).item_number = 2
-
-
-        Inv(3).item_name = "worn blades"
-        Inv(3).item_desc = "two short blades, slightly dulled but still mininbst"
-        Inv(3).effect = "slashing damage"
-        Inv(1).X_loc = -2
-        Inv(1).Y_loc = -2
-        Inv(3).item_number = 3
-
-
-        Inv(4).item_name = "Old short bow"
-        Inv(4).item_desc = "An ancient short bow that does minimal damage due to how frail it is"
-        Inv(4).effect = "peircing damage"
-        Inv(1).X_loc = -2
-        Inv(1).Y_loc = -2
-        Inv(4).item_number = 4
-
-
-        Inv(5).item_name = ""
-        Inv(5).item_desc = ""
-        Inv(5).effect = ""
-        Inv(1).X_loc = -2
-        Inv(1).Y_loc = -2
-
-
-        Inv(6).item_name = ""
-        Inv(6).item_desc = ""
-        Inv(6).effect = ""
-        Inv(1).X_loc = -2
-        Inv(1).Y_loc = -2
-
-
-        Inv(7).item_name = ""
-        Inv(7).item_desc = ""
-        Inv(7).effect = ""
-        Inv(1).X_loc = -2
-        Inv(1).Y_loc = -2
 
         If Name.pclass = "warrior" Then
+            Inv(0).item_name = "War axe"
+            Inv(0).item_desc = "A large, dulled, silver headed axe with a smooth leather wrapped wooden handle"
+            Inv(0).effect = "standard damage with slashing damage effect"
+            Inv(0).X_loc = -1
+            Inv(0).Y_loc = -1
+            Inv(0).item_number = 1
+
+            Inv(1).item_name = "ID"
+            Inv(1).item_desc = vbCrLf & "It Reads: " & vbCrLf & "Name: " & Name.Pname & vbCrLf & "Age: 27" & vbCrLf & "Bodily status: Dead" & vbCrLf & "Occupation: Unemployed " & vbCrLf & "Previous occupations: " & Name.pclass
+            Inv(1).effect = ""
+            Inv(1).X_loc = 0
+            Inv(1).Y_loc = 1
+            Inv(1).item_number = 0
+
+            numofItems = 2
+        ElseIf Name.pclass = "mage" Then
+            Inv(0).item_name = "Mage staff"
+            Inv(0).item_desc = "A long, rough, tree branch like staff which bearly manages to focus the mystical energy within you."
+            Inv(0).effect = "tbt"
+            Inv(0).X_loc = -1
+            Inv(0).Y_loc = -1
+            Inv(0).item_number = 2
+
+            Inv(1).item_name = "ID"
+            Inv(1).item_desc = vbCrLf & "It Reads: " & vbCrLf & "Name: " & Name.Pname & vbCrLf & "Age: 27" & vbCrLf & "Bodily status: Dead" & vbCrLf & "Occupation: Unemployed " & vbCrLf & "Previous occupations: " & Name.pclass
+            Inv(1).effect = ""
+            Inv(1).X_loc = 0
+            Inv(1).Y_loc = 1
+            Inv(1).item_number = 0
+
+            numofItems = 2
+        ElseIf Name.pclass = "rogue" Then
+            Inv(0).item_name = "worn blades"
+            Inv(0).item_desc = "two short blades, slightly dulled but still mininbst"
+            Inv(0).effect = "slashing damage"
+            Inv(0).X_loc = -1
+            Inv(0).Y_loc = -1
+            Inv(0).item_number = 3
+
+
+            Inv(1).item_name = "Old short bow"
+            Inv(1).item_desc = "An ancient short bow that does minimal damage due to how frail it is"
+            Inv(1).effect = "peircing damage"
             Inv(1).X_loc = -1
             Inv(1).Y_loc = -1
+            Inv(1).item_number = 4
 
-        ElseIf Name.pclass = "mage" Then
-            Inv(2).X_loc = -1
-            Inv(2).Y_loc = -1
-            Inv(2).item_number = 2
-        ElseIf Name.pclass = "rogue" Then
-            Inv(3).X_loc = -1
-            Inv(3).Y_loc = -1
-            Inv(4).X_loc = -1
-            Inv(4).Y_loc = -1
-            Inv(3).item_number = 2
-            Inv(4).item_number = 3
+            Inv(2).item_name = "ID"
+            Inv(2).item_desc = vbCrLf & "It Reads: " & vbCrLf & "Name: " & Name.Pname & vbCrLf & "Age: 27" & vbCrLf & "Bodily status: Dead" & vbCrLf & "Occupation: Unemployed " & vbCrLf & "Previous occupations: " & Name.pclass
+            Inv(2).effect = ""
+            Inv(2).X_loc = 0
+            Inv(2).Y_loc = 1
+            Inv(2).item_number = 0
+
+            numofItems = 3
         End If
+
+
+        Inv(numofItems - 1).item_name = ""
+        Inv(numofItems - 1).item_desc = ""
+        Inv(numofItems - 1).effect = ""
+        Inv(numofItems - 1).X_loc = -2
+        Inv(numofItems - 1).Y_loc = -2
+
+
+        Inv(numofItems).item_name = ""
+        Inv(numofItems).item_desc = ""
+        Inv(numofItems).effect = ""
+        Inv(numofItems).X_loc = -2
+        Inv(numofItems).Y_loc = -2
+
+
+        Inv(numofItems + 1).item_name = ""
+        Inv(numofItems + 1).item_desc = ""
+        Inv(numofItems + 1).effect = ""
+        Inv(numofItems + 1).X_loc = -2
+        Inv(numofItems + 1).Y_loc = -2
+
+        'If Name.pclass = "warrior" Then
+        '    Inv(1).X_loc = -1
+        '    Inv(1).Y_loc = -1
+        '
+        'ElseIf Name.pclass = "mage" Then
+        '    Inv(2).X_loc = -1
+        '    Inv(2).Y_loc = -1
+        '    Inv(2).item_number = 2
+        'ElseIf Name.pclass = "rogue" Then
+        '    Inv(3).X_loc = -1
+        '    Inv(3).Y_loc = -1
+        '    Inv(4).X_loc = -1
+        '    Inv(4).Y_loc = -1
+        '    Inv(3).item_number = 2
+        '    Inv(4).item_number = 3
+        'End If
+        Read()
         Inp()
     End Sub
 
